@@ -44,3 +44,5 @@ sudo chown -R $USER:$USER .
 # docker 内で
 chown -R root:root .
 ```
+
+DATABASE_URL="postgresql://root:password@db:5432/database?schema=public"

@@ -1,9 +1,27 @@
+version: '3.8'
 services:
+  db:
+    image: postgres:latest
+    restart: always
+    container_name: postgres
+    environment:
+      POSTGRES_DB: database
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - '5432:5432'
+    volumes:
+      - type: volume
+        source: postgres
+        target: /var/lib/postgresql/data
+    env_file:
+      - .env
   app:
     container_name: ryama-v2
     build:
       context: .
     ports:
+      - '5555:5555'
       - '3000:3000'
     tty: true
     volumes:
@@ -11,28 +29,15 @@ services:
         source: node_modules
         target: /app/node_modules
       - type: bind
-        source: ./
+        source: .
         target: /app
     command: >
-      /bin/sh -c '
-      npm run priup &&
+      sh -c "
+      npm run priup && 
       npm run dev
-      '
-  db:
-    image: postgres:14
-    container_name: postgres
-    environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=secret
-      - POSTGRES_DB=mydb
-    ports:
-      - 5432:5432
-    volumes:
-      - type: volume
-        source: db
-        target: /var/lib/postgresql/data
-    env_file:
-      - .env
+      "
+    depends_on:
+      - db
 volumes:
   node_modules:
     driver: local
@@ -40,4 +45,4 @@ volumes:
       type: none
       device: ${PWD}/node_modules
       o: bind
-  db:
+  postgres:
