@@ -43,13 +43,14 @@ const SigninPage = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
+    <Container maxWidth="xs">
       <Box
         sx={{
+          maxWidth: 'xs',
           marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'center',
           alignItems: 'center',
         }}
       >
@@ -69,7 +70,6 @@ const SigninPage = () => {
             label="email"
             name="email"
             autoComplete="email"
-            autoFocus
           />
           <TextField
             margin="normal"
@@ -80,7 +80,6 @@ const SigninPage = () => {
             label="password"
             name="password"
             autoComplete="current-password"
-            autoFocus
           />
           <Button
             type="submit"
@@ -98,7 +97,7 @@ const SigninPage = () => {
             </Grid>
             <Grid item>
               <Typography variant="body2">
-                <Link href="/register">{"Don't have an account? Sign Up"}</Link>
+                <Link href="/signup">{"Don't have an account? Sign Up"}</Link>
               </Typography>
             </Grid>
           </Grid>

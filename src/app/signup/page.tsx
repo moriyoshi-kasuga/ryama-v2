@@ -38,7 +38,7 @@ const SignupPage = () => {
     });
 
     if (response.ok) {
-      router.push('/login');
+      router.push('/signin');
     } else {
       console.log('error');
     }
@@ -120,7 +120,7 @@ const SignupPage = () => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login">Already have an account? Login</Link>
+                <Link href="/signin">Already have an account? Signin</Link>
               </Grid>
             </Grid>
           </Box>

@@ -11,8 +11,8 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - type: volume
-        source: postgres
+      - type: bind
+        source: ./db
         target: /var/lib/postgresql/data
     env_file:
       - .env

@@ -2,9 +2,12 @@ import { profile } from 'console';
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
+
 export const authOptions: NextAuthOptions = {
-  debug: true,
   session: { strategy: 'jwt' },
+  // debug: process.env.NODE_ENV !== 'production',
+  secret: NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: 'Sign in',
