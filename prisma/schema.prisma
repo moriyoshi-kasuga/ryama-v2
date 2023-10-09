@@ -54,8 +54,8 @@ model User {
   hashedPassword String
 
   profile   Profile?
-  Directory Directory[]
-  Document  Document[]
+  directory Directory[]
+  document  Document[]
 
   @@map("users")
 }
