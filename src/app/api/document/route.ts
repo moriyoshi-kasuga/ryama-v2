@@ -1,28 +1,54 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { authOptions } from '@/lib/authOptions';
 import prisma from '@/lib/prismadb';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
 
-// POST /api/post
-// Required fields in body: name
-// Optional fields in body: content
-export default async function handle(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
-  const { name, content } = req.body;
-
-  const session = await getSession({ req });
-
-  if (session) {
-    const result = await prisma.document.create({
-      data: {
-        name: name,
-        content: content,
-        user: { connect: { email: session.user?.email! } },
+export const GET = async (req: Request) => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return Response.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+  try {
+    const documents = await prisma.document.findMany({
+      where: {
+        user: {
+          email: session.user?.email!,
+        },
       },
     });
-    res.json(result);
-  } else {
-    res.status(401).send({ message: 'Unauthorized' });
+    return Response.json(documents, { status: 201 });
+  } catch (err: any) {
+    return Response.json({ message: err.message }, { status: 500 });
   }
-}
+};
+
+export const POST = async (req: Request) => {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return Response.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+  try {
+    const { directoryID, name } = await req.json();
+
+    const document = await prisma.document.create({
+      data: {
+        directoryId: directoryID,
+        user: {
+          connect: {
+            email: session.user?.email!,
+          },
+        },
+        name: name,
+      },
+    });
+
+    return Response.json(
+      {
+        message: `success create docuemt of ${directoryID} 's child`,
+        document,
+      },
+      { status: 201 },
+    );
+  } catch (err: any) {
+    return Response.json({ message: err.message }, { status: 500 });
+  }
+};

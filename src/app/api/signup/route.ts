@@ -1,24 +1,18 @@
 import bcrypt from 'bcrypt';
-import { NextResponse } from 'next/server';
 
 import prismadb from '@/lib/prismadb';
 
-// ユーザー新規登録API
-export const POST = async (req: Request, res: NextResponse) => {
+export const POST = async (req: Request) => {
   try {
-    if (req.method !== 'POST')
-      return NextResponse.json({ message: 'Bad Request' }, { status: 405 });
-
     const { name, email, password } = await req.json();
 
     const existingUser = await prismadb.user.findUnique({ where: { email } });
 
-    if (existingUser)
-      return NextResponse.json({ message: 'Email taken' }, { status: 422 });
+    if (existingUser) {
+      return Response.json({ message: 'Email taken' }, { status: 422 });
+    }
 
-    console.log('start hash');
     const hashedPassword = await bcrypt.hash(password, 12);
-    console.log('end hash');
 
     const user = await prismadb.user.create({
       data: {
@@ -27,11 +21,17 @@ export const POST = async (req: Request, res: NextResponse) => {
         hashedPassword,
         image: '',
         emailVerified: new Date(),
+        directory: {
+          create: {
+            name: 'explorer',
+            isExplorer: true,
+          },
+        },
       },
     });
 
-    return NextResponse.json({ user }, { status: 201 });
+    return Response.json({ user }, { status: 201 });
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 });
+    return Response.json({ message: err.message }, { status: 500 });
   }
 };

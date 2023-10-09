@@ -1,9 +1,9 @@
 version: '3.8'
 services:
   db:
+    container_name: postgres
     image: postgres:latest
     restart: always
-    container_name: postgres
     environment:
       POSTGRES_DB: database
       POSTGRES_USER: root
@@ -11,32 +11,38 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - type: volume
-        source: postgres
+      - type: bind
+        source: ./db
         target: /var/lib/postgresql/data
     env_file:
       - .env
-  app:
+  app: &app
     container_name: ryama-v2
     build:
       context: .
     ports:
-      - '5555:5555'
       - '3000:3000'
     tty: true
     volumes:
       - type: volume
         source: node_modules
-        target: /app/node_modules
+        target: /workspace/node_modules
       - type: bind
         source: .
-        target: /app
+        target: /workspace
+        consistency: cached
     command: >
       sh -c "
       npm run dev
       "
     depends_on:
       - db
+  studio:
+    container_name: studio
+    <<: *app
+    command: npx prisma studio
+    ports:
+      - '5555:5555'
 volumes:
   node_modules:
     driver: local
