@@ -1,0 +1,20 @@
+{
+  "dockerComposeFile": ["../docker-compose.yml", "docker-compose.yml"],
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "runServices": ["app", "db", "studio"],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "Prisma.prisma",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "[dockercompose]": {
+          "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+        }
+      }
+    }
+  }
+}
