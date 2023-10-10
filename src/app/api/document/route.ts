@@ -31,7 +31,11 @@ export const POST = async (req: Request) => {
 
     const document = await prisma.document.create({
       data: {
-        directoryId: directoryID,
+        directory: {
+          connect: {
+            id: directoryID,
+          },
+        },
         user: {
           connect: {
             email: session.user?.email!,
@@ -41,13 +45,7 @@ export const POST = async (req: Request) => {
       },
     });
 
-    return Response.json(
-      {
-        message: `success create docuemt of ${directoryID} 's child`,
-        document,
-      },
-      { status: 201 },
-    );
+    return Response.json(document, { status: 201 });
   } catch (err: any) {
     return Response.json({ message: err.message }, { status: 500 });
   }

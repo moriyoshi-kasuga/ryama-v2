@@ -5,12 +5,12 @@ import Link from 'next/link';
 
 export default function Home() {
   const { data: session } = useSession();
-  const [docuemnts, setDocuments] = useState('');
+  const [documents, setDocuments] = useState('');
+  const [explorerId, setExplorerId] = useState('');
 
   useEffect(() => {
     const fetchDocuments = async () => {
       const response = await fetch('/api/document');
-      console.log(response.ok);
       if (!response.ok) {
         return;
       }
@@ -20,13 +20,42 @@ export default function Home() {
     };
     fetchDocuments();
   }, []);
+  const loadDocuments = async () => {
+    const response = await fetch('/api/document', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        directoryID: explorerId,
+        name: 'test',
+      }),
+    });
+    if (!response.ok) {
+      return;
+    }
+    const json = await response.json();
+    setDocuments(json);
+  };
+  const getExplorerId = async () => {
+    const response = await fetch('/api/explorer');
+    if (!response.ok) {
+      return;
+    }
+    const json = await response.json();
+    setExplorerId(json.id);
+  };
   if (session) {
     return (
       <>
         Signed in as {session.user!.name} <br />
         Signed in as {session.user!.email} <br />
         <button onClick={() => signOut()}>Sign out</button>
-        {docuemnts}
+        <div>{JSON.stringify(documents)}</div>
+        <br />
+        <button onClick={() => getExplorerId()}>ID: {explorerId}</button>
+        <br />
+        <button onClick={() => loadDocuments()}> Add document</button>
       </>
     );
   }
