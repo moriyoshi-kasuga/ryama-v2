@@ -1,33 +1,21 @@
 import { directoriesUpdate } from '@/features/api/directory';
-import { authOptions } from '@/lib/authOptions';
+import { ensureAuthenticated } from '@/features/api/utils';
 import prisma from '@/lib/prismadb';
-import { getServerSession } from 'next-auth';
 
 export const GET = async (req: Request) => {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return Response.json({ message: 'Unauthorized' }, { status: 401 });
-  }
-  try {
+  return ensureAuthenticated(async (session) => {
     const directories = await prisma.directory.findMany({
       where: {
         userId: session.id,
       },
     });
     return Response.json(directories, { status: 201 });
-  } catch (err: any) {
-    return Response.json({ message: err.message }, { status: 500 });
-  }
+  });
 };
 
 export const POST = async (req: Request) => {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return Response.json({ message: 'Unauthorized' }, { status: 401 });
-  }
-  try {
+  return ensureAuthenticated(async (session) => {
     const { parentId, name } = await req.json();
-
     const directory = await prisma.directory.create({
       data: {
         parentId,
@@ -37,7 +25,5 @@ export const POST = async (req: Request) => {
     });
     directoriesUpdate(directory.id);
     return Response.json(directory, { status: 201 });
-  } catch (err: any) {
-    return Response.json({ message: err.message }, { status: 500 });
-  }
+  });
 };
