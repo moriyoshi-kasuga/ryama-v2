@@ -1,6 +1,6 @@
 import prisma from '@/lib/prismadb';
 
-export const directoryUpdate = async (parentId: string) => {
+export const directoriesUpdate = async (parentId: string) => {
   try {
     await prisma.directory.update({
       where: {
@@ -23,8 +23,9 @@ export const directoryUpdate = async (parentId: string) => {
     if (!id) {
       return;
     }
-    directoryUpdate(id);
+    directoriesUpdate(id);
   } catch (err: any) {
     return;
   }
 };
+

@@ -1,4 +1,4 @@
-import { directoryUpdate } from '@/lib/api';
+import { directoriesUpdate } from '@/features/api/directory';
 import { authOptions } from '@/lib/authOptions';
 import prisma from '@/lib/prismadb';
 import { getServerSession } from 'next-auth';
@@ -35,7 +35,7 @@ export const POST = async (req: Request) => {
         name: name,
       },
     });
-    directoryUpdate(directory.id);
+    directoriesUpdate(directory.id);
     return Response.json(directory, { status: 201 });
   } catch (err: any) {
     return Response.json({ message: err.message }, { status: 500 });
