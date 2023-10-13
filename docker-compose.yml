@@ -8,16 +8,17 @@ services:
       POSTGRES_DB: database
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
+      TZ: 'Asia/Tokyo'
     ports:
       - '5432:5432'
     volumes:
       - type: bind
-        source: ./db
+        source: db
         target: /var/lib/postgresql/data
     env_file:
       - .env
   app: &app
-    container_name: ryama-v2
+    container_name: next
     build:
       context: .
     ports:

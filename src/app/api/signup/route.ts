@@ -21,7 +21,7 @@ export const POST = async (req: Request) => {
         hashedPassword,
         image: '',
         emailVerified: new Date(),
-        directory: {
+        directories: {
           create: {
             name: 'explorer',
             isExplorer: true,

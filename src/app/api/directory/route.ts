@@ -9,12 +9,12 @@ export const GET = async (req: Request) => {
     return Response.json({ message: 'Unauthorized' }, { status: 401 });
   }
   try {
-    const documents = await prisma.document.findMany({
+    const directories = await prisma.directory.findMany({
       where: {
         userId: session.id,
       },
     });
-    return Response.json(documents, { status: 201 });
+    return Response.json(directories, { status: 201 });
   } catch (err: any) {
     return Response.json({ message: err.message }, { status: 500 });
   }
@@ -28,15 +28,15 @@ export const POST = async (req: Request) => {
   try {
     const { parentId, name } = await req.json();
 
-    const document = await prisma.document.create({
+    const directory = await prisma.directory.create({
       data: {
         parentId,
         userId: session.id,
         name: name,
       },
     });
-    directoryUpdate(document.parentId);
-    return Response.json(document, { status: 201 });
+    directoryUpdate(directory.id);
+    return Response.json(directory, { status: 201 });
   } catch (err: any) {
     return Response.json({ message: err.message }, { status: 500 });
   }

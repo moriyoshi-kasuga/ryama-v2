@@ -36,7 +36,6 @@ export const authOptions: NextAuthOptions = {
             id: user.id,
             name: user.name,
             email: user.email,
-            role: 'admin',
           };
         }
 
@@ -45,26 +44,23 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt: async ({ token, user, account, profile }) => {
+    jwt: async ({ token, user }) => {
       if (user) {
-        token.user = user;
-        const u = user as any;
-        token.role = u.role;
-      }
-      if (account) {
-        token.accessToken = account.access_token;
+        return {
+          ...token,
+          id: user.id,
+        };
       }
       return token;
     },
     session: ({ session, token }) => {
-      token.accessToken;
       return {
         ...session,
-        user: {
-          ...session.user,
-          role: token.role,
-        },
+        id: token.id,
       };
     },
+  },
+  pages: {
+    signIn: '/siginin',
   },
 };
