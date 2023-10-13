@@ -36,7 +36,7 @@ model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id")
-  expires      DateTime
+  expires      DateTime @db.Timestamp(3)
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
@@ -46,16 +46,16 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
+  emailVerified DateTime? @map("email_verified") @db.Timestamp(3)
   image         String?
   accounts      Account[]
   sessions      Session[]
 
   hashedPassword String
 
-  profile   Profile?
+  profile     Profile?
   directories Directory[]
-  documents  Document[]
+  documents   Document[]
 
   @@map("users")
 }
@@ -63,7 +63,7 @@ model User {
 model VerificationToken {
   identifier String
   token      String   @unique
-  expires    DateTime
+  expires    DateTime @db.Timestamp(3)
 
   @@unique([identifier, token])
   @@map("verificationtokens")
@@ -88,8 +88,8 @@ model Document {
 
   isPublic Boolean @default(false) @map("is_public")
 
-  createAt DateTime @default(now()) @map("create_at")
-  updateAt DateTime @default(now()) @map("update_at")
+  createdAt DateTime @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamp(3)
+  updatedAt DateTime @default(dbgenerated("NOW()")) @map("updated_at") @db.Timestamp(3)
 
   directory Directory @relation(fields: [parentId], references: [id])
   parentId  String    @map("parent_id")
@@ -105,8 +105,8 @@ model Directory {
   name       String
   isExplorer Boolean @default(false) @map("is_explorer")
 
-  createAt DateTime @default(now()) @map("create_at")
-  updateAt DateTime @default(now()) @map("update_at")
+  createdAt DateTime @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamp(3)
+  updatedAt DateTime @default(dbgenerated("NOW()")) @map("updated_at") @db.Timestamp(3)
 
   parentId String?     @map("parent_id")
   parent   Directory?  @relation("DirectoryChildren", fields: [parentId], references: [id])

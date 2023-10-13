@@ -3,6 +3,7 @@
   "service": "app",
   "workspaceFolder": "/workspace",
   "runServices": ["app", "db", "studio"],
+  "shutdownAction": "none",
   "customizations": {
     "vscode": {
       "extensions": [

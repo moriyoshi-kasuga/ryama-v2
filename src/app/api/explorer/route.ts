@@ -13,6 +13,7 @@ export const GET = async (req: NextRequest) => {
     if (option === 'all') {
       const explorer = await prisma.directory.findFirst({
         where: {
+          userId: session.id,
           isExplorer: true,
         },
         include: {
@@ -24,6 +25,7 @@ export const GET = async (req: NextRequest) => {
     } else {
       const explorer = await prisma.directory.findFirst({
         where: {
+          userId: session.id,
           isExplorer: true,
         },
         select: {

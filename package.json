@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "primig": "prisma migrate dev",
+    "primig": "prisma migrate dev --name migrate",
     "prigen": "prisma generate",
     "priup": "npm run primig && npm run prigen"
   },
@@ -19,7 +19,7 @@
     "@mui/material": "^5.14.12",
     "@prisma/client": "^5.3.1",
     "bcrypt": "^5.1.1",
-    "next": "latest",
+    "next": "^13.5.4",
     "next-auth": "^4.23.2",
     "react": "latest",
     "react-dom": "latest"

@@ -11,12 +11,11 @@ export default function Home() {
   useEffect(() => {
     const fetchDocuments = async () => {
       const response = await fetch('/api/document');
+      const json = await response.json();
       if (!response.ok) {
         return;
       }
-      const docuemnts = await response.json();
-      console.log(docuemnts);
-      setDocuments(docuemnts);
+      setDocuments(json);
     };
     fetchDocuments();
   }, []);
@@ -27,14 +26,14 @@ export default function Home() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        directoryID: explorerId,
+        parentId: explorerId,
         name: 'test',
       }),
     });
+    const json = await response.json();
     if (!response.ok) {
       return;
     }
-    const json = await response.json();
     setDocuments(json);
   };
   const getExplorerId = async () => {
@@ -53,7 +52,7 @@ export default function Home() {
         <button onClick={() => signOut()}>Sign out</button>
         <div>{JSON.stringify(documents)}</div>
         <br />
-        <button onClick={() => getExplorerId()}>ID: {explorerId}</button>
+        <button onClick={() => getExplorerId()}>Id: {explorerId}</button>
         <br />
         <button onClick={() => loadDocuments()}> Add document</button>
       </>
