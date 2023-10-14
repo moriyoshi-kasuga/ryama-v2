@@ -18,7 +18,7 @@ services:
     env_file:
       - .env
   app: &app
-    container_name: next
+    container_name: ryama-v2
     build:
       context: .
     ports:

@@ -1,14 +1,9 @@
-import { authOptions } from '@/lib/authOptions';
+import { ensureAuthenticated } from '@/features/api/utils';
 import prisma from '@/lib/prismadb';
-import { getServerSession } from 'next-auth';
 import { NextRequest } from 'next/server';
 
 export const GET = async (req: NextRequest) => {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return Response.json({ message: 'Unauthorized' }, { status: 401 });
-  }
-  try {
+  return ensureAuthenticated(async (session) => {
     const option = req.nextUrl.searchParams.get('option');
     if (option === 'all') {
       const explorer = await prisma.directory.findFirst({
@@ -23,7 +18,7 @@ export const GET = async (req: NextRequest) => {
       });
       return Response.json(explorer, { status: 201 });
     } else {
-      const explorer = await prisma.directory.findFirst({
+      const id = await prisma.directory.findFirst({
         where: {
           userId: session.id,
           isExplorer: true,
@@ -32,9 +27,7 @@ export const GET = async (req: NextRequest) => {
           id: true,
         },
       });
-      return Response.json(explorer, { status: 201 });
+      return Response.json(id, { status: 201 });
     }
-  } catch (err: any) {
-    return Response.json({ message: err.message }, { status: 500 });
-  }
+  });
 };
