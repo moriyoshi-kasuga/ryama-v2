@@ -1,7 +1,8 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import SessionProvider from '@/provider/SessionProvider';
 import { Inter } from 'next/font/google';
+import ThemeRegistry from '@/components/ThemeRegistry/ThemeRegistry';
+import NextAuthProvider from '@/provider/NextAuthProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,10 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SessionProvider>
-      <html lang="en">
-        <body className={inter.className}>{children}</body>
-      </html>
-    </SessionProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        <NextAuthProvider>
+          <ThemeRegistry>{children}</ThemeRegistry>
+        </NextAuthProvider>
+      </body>
+    </html>
   );
 }
