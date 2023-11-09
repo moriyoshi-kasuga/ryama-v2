@@ -1,4 +1,4 @@
-import HomeAppBar from '@/components/home/HomeAppBar';
+import HomeHeader from '@/components/home/HomeHeader';
 import HomeFooter from '@/components/home/HomeFooter';
 
 export default function HomeLayout({
@@ -8,7 +8,7 @@ export default function HomeLayout({
 }) {
   return (
     <>
-      <HomeAppBar />
+      <HomeHeader />
       {children}
       <HomeFooter />
     </>

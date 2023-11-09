@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-const HomeFooter = () => {
+export default function HomeFooter() {
   return (
-    <div>HomeFooter</div>
-  )
+    <footer>
+      <ol>
+      </ol>
+    </footer>
+  );
 }
-
-export default HomeFooter
