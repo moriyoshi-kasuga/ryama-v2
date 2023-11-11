@@ -9,7 +9,7 @@ export const POST = async (req: Request) => {
     const existingUser = await prismadb.user.findUnique({ where: { email } });
 
     if (existingUser) {
-      return Response.json({ message: 'Email taken' }, { status: 422 });
+      return Response.json({ message: 'Aleady registered this email' }, { status: 422 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);

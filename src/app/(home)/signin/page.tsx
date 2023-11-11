@@ -48,7 +48,7 @@ export default function Page() {
       <div className="flex min-h-full flex-col justify-center">
         <div className="flex min-h-full flex-col justify-center px-6 lg:px-8">
           <div className="py-6 sm:mx-auto sm:w-full sm:max-w-sm">
-            <h1 className="pb-8 text-6xl text-center font-thin">Log in</h1>
+            <h1 className="pb-8 text-6xl text-center font-thin">Sign in</h1>
             <div className={`mb-2 ${error ? 'block' : 'hidden'}`}>
               <div className="text-red-400 text-sm text-center p-2 rounded border border-red-300 bg-red-50">
                 {error}
@@ -80,7 +80,6 @@ export default function Page() {
                 </label>
                 <input
                   type="password"
-                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="bg-gray-100 border border-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="password"
@@ -90,7 +89,7 @@ export default function Page() {
               <input
                 type="submit"
                 className="text-white bg-blue-500 hover:bg-blue-600 hover:ring-2 hover:outline-none hover:ring-blue-300  rounded-md  w-full  px-5 py-3 text-center"
-                value="Log in"
+                value="Sign in"
               />
               <div className="my-8 leading-6 font-medium text-sm">
                 <p className="text-center text-gray-500">
