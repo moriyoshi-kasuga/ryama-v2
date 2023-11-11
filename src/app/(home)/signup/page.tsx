@@ -11,8 +11,6 @@ export default function Page() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // TODO: sign in は作ったから,sign in を参考にsign up ページを作ろう
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -46,7 +44,9 @@ export default function Page() {
         if (res.ok) {
           router.push('/signin');
         } else {
-          setError(res.message);
+          res.json().then((data) => {
+            setError(data.message);
+          });
         }
       })
       .catch((err) => {

@@ -2,8 +2,6 @@
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 
-// TODO: component とか page の function か const どちらかに統一しよう。
-
 export default function Page() {
   const { data: session, status } = useSession();
   return (
