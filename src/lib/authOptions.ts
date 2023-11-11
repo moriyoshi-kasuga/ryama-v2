@@ -5,7 +5,7 @@ const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: 'jwt' },
-  // debug: process.env.NODE_ENV !== 'production',
+  debug: process.env.NODE_ENV !== 'production',
   secret: NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
