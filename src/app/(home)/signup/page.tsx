@@ -123,7 +123,7 @@ export default function Page() {
                 <p className="text-center text-gray-500">
                   {'Have an account? '}
                   <a
-                    href="#"
+                    href="/signin"
                     className="transition-colors text-blue-300 hover:text-blue-500 duration-300"
                   >
                     Sign in an account

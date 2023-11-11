@@ -95,7 +95,7 @@ export default function Page() {
                 <p className="text-center text-gray-500">
                   {"Don't have an account? "}
                   <a
-                    href="#"
+                    href="/signup"
                     className="transition-colors text-blue-300 hover:text-blue-500 duration-300"
                   >
                     Create an account
