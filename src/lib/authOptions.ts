@@ -11,11 +11,7 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'Sign in',
       credentials: {
-        email: {
-          label: 'Email',
-          type: 'email',
-          placeholder: 'example@exampl.com',
-        },
+        email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
       // メールアドレス認証
@@ -61,6 +57,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: '/siginin',
+    signIn: '/signin',
   },
 };

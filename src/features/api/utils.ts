@@ -1,5 +1,4 @@
 import { authOptions } from '@/lib/authOptions';
-import prisma from '@/lib/prismadb';
 import { Session, getServerSession } from 'next-auth';
 
 export const ensureAuthenticated = async (

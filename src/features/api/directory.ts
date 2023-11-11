@@ -28,4 +28,3 @@ export const directoriesUpdate = async (parentId: string) => {
     return;
   }
 };
-
