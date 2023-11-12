@@ -61,6 +61,14 @@ export default function Page() {
         <div className="flex min-h-full flex-col justify-center px-6 lg:px-8">
           <div className="py-6 sm:mx-auto sm:w-full sm:max-w-sm">
             <h1 className="pb-8 text-6xl text-center font-thin">Sign up</h1>
+            <button
+              onClick={() => signIn('google')}
+              className="relative rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 w-full"
+            >
+              <span className='bg-[url("/google.svg")] bg-cover bg-center w-6 h-6 absolute left-3 top-1/2 -translate-y-1/2'></span>
+              <span className="">Sign up with Google</span>
+            </button>
+            <div className="my-4 text-center mx-auto">or</div>
             <div className={`mb-2 ${error ? 'block' : 'hidden'}`}>
               <div className="text-red-400 text-sm text-center p-2 rounded border border-red-300 bg-red-50">
                 {error}
@@ -123,7 +131,7 @@ export default function Page() {
                 <p className="text-center text-gray-500">
                   {'Have an account? '}
                   <a
-                    href="#"
+                    href="/signin"
                     className="transition-colors text-blue-300 hover:text-blue-500 duration-300"
                   >
                     Sign in an account
