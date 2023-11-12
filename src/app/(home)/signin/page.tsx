@@ -35,7 +35,7 @@ export default function Page({}) {
           setError('Invalid email or password');
           setPassword('');
         } else {
-          router.push(res?.url);
+          router.push(res?.url!);
         }
       })
       .catch((err) => {
