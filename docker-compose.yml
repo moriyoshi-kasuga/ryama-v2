@@ -29,6 +29,7 @@ services:
         consistency: cached
     command: >
       sh -c "
+      npm run priup &&
       npm run dev
       "
     depends_on:
