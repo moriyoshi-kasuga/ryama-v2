@@ -4,30 +4,23 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import prisma from './prismadb';
-import { randomUUID } from 'crypto';
-import { put } from '@vercel/blob';
 
 const prismaAdapter = PrismaAdapter(prisma);
 
-//@ts-ignore
-prismaAdapter.createUser = async (data) => {
-  const uuid = randomUUID();
-  const avatar = await fetch(data.image!).then((res) => res.blob());
+// //@ts-ignore
+// prismaAdapter.createUser = async (data) => {
+//   const uuid = randomUUID();
+//   return prisma.user.create({
+//     //@ts-ignore
+//     data: {
+//       ...data,
+//     },
+//   });
+// };
 
-  const imageUrl = await put('avatar/' + uuid + '.png', avatar, {
-    access: 'public',
-    addRandomSuffix: false,
-  }).then((res) => res.url as string);
-
-  data.image = imageUrl;
-  return prisma.user.create({
-    //@ts-ignore
-    data: {
-      ...data,
-      id: uuid.toString(),
-    },
-  });
-};
+// TODO: Google Provider は作ったから credentials Provider では、signupは普通にdbで作ってるだけだから、
+// signupの時にメールに送信してそれでアカウント作ってって感じにして、メールが正しいかを確認する。
+// それは bookmark に貼ってたりするからお願い。
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: 'jwt' },

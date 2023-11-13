@@ -22,12 +22,10 @@ export const POST = async (req: Request) => {
         name,
     ).then((res) => res.blob());
 
-    const imageUrl = await fetch('/api/avatar/upload', {
+    const imageUrl: string = await fetch('/api/avatar', {
       method: 'POST',
       body: avator,
-    })
-      .then((res) => res.json())
-      .then((res) => res.url as string);
+    }).then((res) => res.json());
 
     const user = await prismadb.user.create({
       data: {
