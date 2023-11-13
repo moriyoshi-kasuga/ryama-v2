@@ -53,9 +53,8 @@ model User {
 
     hashedPassword String?
 
-    profile     Profile?
-    directories Directory[]
-    documents   Document[]
+    profile   Profile?
+    workspace WorkSpace[]
 
     @@map("users")
 }
@@ -71,48 +70,83 @@ model VerificationToken {
 
 model Profile {
     id      String @id @default(uuid())
-    user    User   @relation(fields: [userId], references: [id])
+    user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId  String @unique @map("user_id")
     options Json   @map("options")
 
     @@map("profiles")
 }
 
-model Document {
-    user   User   @relation(fields: [userId], references: [id])
-    userId String @map("user_id")
+model WorkSpace {
+    id        String   @id @default(uuid())
+    name      String
+    createdAt DateTime @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamp(3)
+    updatedAt DateTime @default(dbgenerated("NOW()")) @map("updated_at") @db.Timestamp(3)
 
+    User     User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId   String?
+    explorer Explorer?
+
+    @@map("workspaces")
+}
+
+enum ParentType {
+    Directory
+    Explorer
+}
+
+enum ChildType {
+    Document
+    Directory
+}
+
+model Document {
     id      String  @id @default(uuid())
     name    String
     content String? @db.Text
 
-    isPublic Boolean @default(false) @map("is_public")
-
     createdAt DateTime @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamp(3)
     updatedAt DateTime @default(dbgenerated("NOW()")) @map("updated_at") @db.Timestamp(3)
-
-    directory Directory @relation(fields: [parentId], references: [id])
-    parentId  String    @map("parent_id")
+    parent    Item     @relation(fields: [parentId], references: [id])
+    parentId  String   @unique @map("itemId")
 
     @@map("documents")
 }
 
 model Directory {
-    user   User   @relation(fields: [userId], references: [id])
-    userId String @map("user_id")
-
-    id         String  @id @default(uuid())
-    name       String
-    isExplorer Boolean @default(false) @map("is_explorer")
+    id   String @id @default(uuid())
+    name String
 
     createdAt DateTime @default(dbgenerated("NOW()")) @map("created_at") @db.Timestamp(3)
     updatedAt DateTime @default(dbgenerated("NOW()")) @map("updated_at") @db.Timestamp(3)
-
-    parentId String?     @map("parent_id")
-    parent   Directory?  @relation("DirectoryChildren", fields: [parentId], references: [id])
-    children Directory[] @relation("DirectoryChildren")
-
-    documents Document[]
+    parent    Item     @relation("child", fields: [parentId], references: [id])
+    parentId  String   @unique
+    childs    Item[]   @relation("parents")
 
     @@map("directories")
+}
+
+model Item {
+    id String @id @default(uuid())
+
+    childType ChildType
+    document  Document?
+    child     Directory? @relation("child")
+
+    parentType ParentType
+    parent     Directory? @relation("parents", fields: [parentId], references: [id], onDelete: Cascade)
+    parentId   String?
+    explorer   Explorer?  @relation(fields: [explorerId], references: [id], onDelete: Cascade)
+    explorerId String?
+
+    @@map("items")
+}
+
+model Explorer {
+    id String @id @default(uuid())
+
+    workspace   WorkSpace @relation(fields: [workspaceId], references: [id])
+    workspaceId String    @unique
+
+    items Item[]
 }
