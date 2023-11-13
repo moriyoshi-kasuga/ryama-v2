@@ -2,7 +2,7 @@
 
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, Suspense, useEffect, useState } from 'react';
 
 export default function Page({}) {
   const searchParams = useSearchParams();
@@ -57,7 +57,7 @@ export default function Page({}) {
   }, [urlError]);
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="flex min-h-full flex-col justify-center">
         <div className="flex min-h-full flex-col justify-center px-6 lg:px-8">
           <div className="py-6 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -128,6 +128,6 @@ export default function Page({}) {
           </div>
         </div>
       </div>
-    </>
+    </Suspense>
   );
 }
