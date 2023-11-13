@@ -1,6 +1,7 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, Suspense, useRef, useState } from 'react';
 
@@ -132,12 +133,12 @@ export default function Page() {
               <div className="my-8 leading-6 font-medium text-sm">
                 <p className="text-center text-gray-500">
                   {'Have an account? '}
-                  <a
+                  <Link
                     href="/signin"
                     className="transition-colors text-blue-300 hover:text-blue-500 duration-300"
                   >
                     Sign in an account
-                  </a>
+                  </Link>
                 </p>
               </div>
             </form>
