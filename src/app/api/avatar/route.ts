@@ -16,6 +16,6 @@ export const POST = async (req: Request) => {
     const avatar = await supabase.storage
       .from('avatar')
       .update(session.id, req.body!, { upsert: true });
-    return Response.json(avatar.data?.path);
+    return Response.json({ url: avatar.data?.path });
   });
 };
