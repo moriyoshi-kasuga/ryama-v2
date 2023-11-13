@@ -2,18 +2,21 @@
 
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, Suspense, useEffect, useRef, useState } from 'react';
 
 export default function Page({}) {
   const searchParams = useSearchParams();
   const urlError = searchParams.get('error');
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const email = emailRef?.current?.value;
+    const password = passwordRef?.current?.value;
 
     if (!email) {
       setError("Email can't be empty");
@@ -33,13 +36,13 @@ export default function Page({}) {
       .then((res) => {
         if (res?.error) {
           setError('Invalid email or password');
-          setPassword('');
+          passwordRef.current!.value = '';
         } else {
           router.push(res?.url!);
         }
       })
       .catch((err) => {
-        setPassword('');
+        passwordRef.current!.value = '';
         setError('Server error');
         console.log(err);
       });
@@ -57,7 +60,7 @@ export default function Page({}) {
   }, [urlError]);
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="flex min-h-full flex-col justify-center">
         <div className="flex min-h-full flex-col justify-center px-6 lg:px-8">
           <div className="py-6 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -85,8 +88,7 @@ export default function Page({}) {
                 </label>
                 <input
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  ref={emailRef}
                   className="bg-gray-100 border border-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="email"
                   id="email"
@@ -101,7 +103,7 @@ export default function Page({}) {
                 </label>
                 <input
                   type="password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  ref={passwordRef}
                   className="bg-gray-100 border border-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="password"
                   id="password"
@@ -128,6 +130,6 @@ export default function Page({}) {
           </div>
         </div>
       </div>
-    </>
+    </Suspense>
   );
 }

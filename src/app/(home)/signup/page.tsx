@@ -2,17 +2,21 @@
 
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useState } from 'react';
+import { FormEvent, Suspense, useRef, useState } from 'react';
 
 export default function Page() {
   const router = useRouter();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const name = nameRef?.current?.value;
+    const email = emailRef?.current?.value;
+    const password = passwordRef?.current?.value;
 
     if (!name) {
       setError("Name can't be empty");
@@ -56,7 +60,7 @@ export default function Page() {
   };
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="flex min-h-full flex-col justify-center">
         <div className="flex min-h-full flex-col justify-center px-6 lg:px-8">
           <div className="py-6 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -84,8 +88,7 @@ export default function Page() {
                 </label>
                 <input
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  ref={nameRef}
                   className="bg-gray-100 border border-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="name"
                   id="name"
@@ -100,8 +103,7 @@ export default function Page() {
                 </label>
                 <input
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  ref={emailRef}
                   className="bg-gray-100 border border-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="email"
                   id="email"
@@ -116,7 +118,7 @@ export default function Page() {
                 </label>
                 <input
                   type="password"
-                  onChange={(e) => setPassword(e.target.value)}
+                  ref={passwordRef}
                   className="bg-gray-100 border border-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="password"
                   id="password"
@@ -142,6 +144,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-    </>
+    </Suspense>
   );
 }

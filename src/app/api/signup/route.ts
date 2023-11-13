@@ -22,7 +22,7 @@ export const POST = async (req: Request) => {
         name,
     ).then((res) => res.blob());
 
-    const imageUrl = await fetch('/api/avatar/upload', {
+    const imageUrl = await fetch('/api/avatar', {
       method: 'POST',
       body: avator,
     })
@@ -35,13 +35,6 @@ export const POST = async (req: Request) => {
         name,
         hashedPassword,
         image: imageUrl,
-        emailVerified: new Date(),
-        directories: {
-          create: {
-            name: 'explorer',
-            isExplorer: true,
-          },
-        },
       },
     });
 

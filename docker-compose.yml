@@ -12,6 +12,11 @@ services:
         target: /var/lib/postgresql/data
     env_file:
       - .env
+    environment:
+      POSTGRES_DB: database
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      DATABASE_URL: postgres://root:password@db:5432/database
   app: &app
     container_name: ryama-v2
     build:
