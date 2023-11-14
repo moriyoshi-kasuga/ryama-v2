@@ -1,8 +1,61 @@
+'use client';
+import { VscAccount } from 'react-icons/vsc';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import UserMenu from '../user/UserMenu';
+import { useSession } from 'next-auth/react';
+import Loading from '../loading';
 
 export default function HomeHeader() {
+  const pathname = usePathname();
+  const session = useSession();
+
+  function userMenu() {
+    if (session.status == 'loading') {
+      return <Loading className="w-8 h-8" title="Loading..." />;
+    }
+    if (session.status == 'authenticated') {
+      return (
+        <>
+          <Link
+            className={`home-header-big-link ${
+              pathname == '/workspace' ? 'active' : ''
+            }`}
+            href="/workspace"
+          >
+            <span>workspace</span>
+            <AiOutlineArrowRight />
+          </Link>
+          <UserMenu />
+        </>
+      );
+    }
+    return (
+      <>
+        <Link
+          className={`home-header-icon-link ${
+            pathname === '/signup' ? 'active' : ''
+          }`}
+          href="/signup"
+        >
+          <VscAccount />
+          <span>signup</span>
+        </Link>
+        <Link
+          className={`home-header-big-link ${
+            pathname == '/signin' ? 'active' : ''
+          }`}
+          href="/signin"
+        >
+          <span>sign in</span>
+          <AiOutlineArrowRight />
+        </Link>
+      </>
+    );
+  }
+
   return (
     <header className="border-b border-b-gray200">
       <div className="w-11/12 container mx-auto flex items-center justify-between text-zinc-400 fill-gray-400 p-1">
@@ -13,33 +66,25 @@ export default function HomeHeader() {
             </h1>
           </Link>
         </div>
-        <div className="ml-auto hidden sm:flex">
+        <div className="ml-auto hidden sm:flex items-center">
           <Link
-            className="px-3 font-medium text-xs hover:text-black transition"
+            className={`home-header-link ${
+              pathname === '/public' ? 'active' : ''
+            }`}
             href="/public"
           >
-            PUBLIC
+            public
           </Link>
           <Link
-            className="px-3 font-medium text-xs hover:text-black transition"
+            className={`home-header-link ${
+              pathname === '/features' ? 'active' : ''
+            }`}
             href="/features"
           >
-            FEATURES
-          </Link>
-          <Link
-            className="px-3 font-medium text-xs hover:text-black transition"
-            href="/signup"
-          >
-            SIGN UP
-          </Link>
-          <Link
-            className="px-3 font-semibold text-xs hover:text-black transition flex items-center"
-            href="/signin"
-          >
-            <span className="mr-1">SIGN IN</span>
-            <AiOutlineArrowRight />
+            features
           </Link>
         </div>
+        {userMenu()}
       </div>
     </header>
   );

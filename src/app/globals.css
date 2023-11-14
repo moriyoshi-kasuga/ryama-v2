@@ -2,3 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.home-header-link {
+  @apply uppercase px-2 font-medium text-sm hover:text-black transition [&.active]:text-red-500;
+}
+
+.home-header-icon-link {
+  @apply home-header-link flex items-center;
+}
+
+.home-header-big-link {
+  @apply uppercase px-2 font-bold text-sm text-sky-500 hover:text-sky-600 transition [&.active]:text-red-500 flex items-center [&:first-child]:mr-1;
+}
