@@ -57,8 +57,8 @@ export default function HomeHeader() {
   }
 
   return (
-    <header className="border-b border-b-gray200">
-      <div className="w-11/12 container mx-auto flex items-center justify-between text-zinc-400 fill-gray-400 p-1">
+    <header className="border-b border-b-gray200 h-[var(--header-height)]">
+      <div className="w-11/12 container m-auto flex items-center justify-between text-zinc-400 fill-gray-400 p-1">
         <div className="flex items-center">
           <Link className="flex items-center transition-colors" href="/">
             <h1 className="mx-4 text-2xl text-black font-sans font-thin">

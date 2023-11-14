@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --header-height: 40px;
+}
+
 .home-header-link {
   @apply uppercase px-2 font-medium text-sm hover:text-black transition [&.active]:text-red-500;
 }

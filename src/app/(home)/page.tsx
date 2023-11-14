@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function Page() {
   return (
     <>
-      <div className="flex flex-col justify-center mx-auto w-full h-screen items-center">
+      <div className="flex flex-col justify-center mx-auto w-full h-full items-center">
         <h1>Home</h1>
         <Link href="/signin">Sign in</Link>
         <Link href="/signup">Sign up</Link>
