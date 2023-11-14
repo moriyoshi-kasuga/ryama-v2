@@ -1,3 +1,0 @@
-type IdParams = {
-  id: string;
-};
