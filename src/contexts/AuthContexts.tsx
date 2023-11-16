@@ -14,6 +14,7 @@ import {
   Session,
 } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import Loading from '@/components/loading';
 
 export type Profile = {
   id: string;
@@ -145,13 +146,13 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     google,
     logout,
   };
-  // if (loading) {
-  //   return (
-  //     <div className="w-full h-screen flex justify-center items-center">
-  //       <Loading />
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="page-center">
+        <Loading className="loading" title="Loading" />
+      </div>
+    );
+  }
   return (
     <AuthContext.Provider value={exposed}>{children}</AuthContext.Provider>
   );

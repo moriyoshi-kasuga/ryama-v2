@@ -13,6 +13,7 @@ export default function Loading({
         <Image
           src="/loading.svg"
           unoptimized
+          priority
           alt="loading"
           fill
           style={{ objectFit: 'contain' }}
