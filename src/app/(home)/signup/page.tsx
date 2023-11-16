@@ -1,12 +1,11 @@
 'use client';
 
-import { signIn } from 'next-auth/react';
+import { useAuth } from '@/contexts/AuthContexts';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { FormEvent, Suspense, useRef, useState } from 'react';
 
 export default function Page() {
-  const router = useRouter();
+  const auth = useAuth();
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -34,30 +33,11 @@ export default function Page() {
       return;
     }
 
-    await fetch('/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        password: password,
-      }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          router.push('/signin');
-        } else {
-          res.json().then((data) => {
-            setError(data.message);
-          });
-        }
-      })
-      .catch((err) => {
-        setError('Server error');
-        console.log(err);
-      });
+    // FIX: したのTODOで直せる
+    // TODO: auth.user と public.profile に対応する
+    // TODO: ちょっと youtube のなんかfigmaのやり方から、デザイン作って実際に作るyoutubeの動画見て勉強しよう。
+
+    console.log(await auth?.signup({ name, email, password }));
   };
 
   return (
@@ -67,7 +47,7 @@ export default function Page() {
           <div className="py-6 sm:mx-auto sm:w-full sm:max-w-sm">
             <h1 className="pb-8 text-6xl text-center font-thin">Sign up</h1>
             <button
-              onClick={() => signIn('google')}
+              onClick={() => auth?.google()}
               className="relative rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 w-full"
             >
               <span className='bg-[url("/google.svg")] bg-cover bg-center w-6 h-6 absolute left-3 top-1/2 -translate-y-1/2'></span>

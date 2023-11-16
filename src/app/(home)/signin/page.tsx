@@ -1,14 +1,11 @@
 'use client';
 
-import { signIn } from 'next-auth/react';
+import { useAuth } from '@/contexts/AuthContexts';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { FormEvent, Suspense, useEffect, useRef, useState } from 'react';
+import { FormEvent, Suspense, useRef, useState } from 'react';
 
 export default function Page({}) {
-  const searchParams = useSearchParams();
-  const urlError = searchParams.get('error');
-  const router = useRouter();
+  const auth = useAuth();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState('');
@@ -29,36 +26,8 @@ export default function Page({}) {
       return;
     }
 
-    await signIn('credentials', {
-      redirect: false,
-      email: email,
-      password: password,
-    })
-      .then((res) => {
-        if (res?.error) {
-          setError('Invalid email or password');
-          passwordRef.current!.value = '';
-        } else {
-          router.push(res?.url!);
-        }
-      })
-      .catch((err) => {
-        passwordRef.current!.value = '';
-        setError('Server error');
-        console.log(err);
-      });
+    console.log(await auth?.login({ email, password }));
   };
-
-  useEffect(() => {
-    switch (urlError) {
-      case 'OAuthAccountNotLinked':
-        setError("You haven't signed up with this google account.");
-        break;
-      case 'OAuthCallback':
-        setError('Authentication failed.');
-        break;
-    }
-  }, [urlError]);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -67,7 +36,7 @@ export default function Page({}) {
           <div className="py-6 sm:mx-auto sm:w-full sm:max-w-sm">
             <h1 className="pb-8 text-6xl text-center font-thin">Sign in</h1>
             <button
-              onClick={() => signIn('google')}
+              onClick={() => auth?.google()}
               className="relative rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 w-full"
             >
               <span className='bg-[url("/google.svg")] bg-cover bg-center w-6 h-6 absolute left-3 top-1/2 -translate-y-1/2'></span>

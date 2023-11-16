@@ -1,61 +1,14 @@
 'use client';
 import { VscAccount } from 'react-icons/vsc';
 import { AiOutlineArrowRight } from 'react-icons/ai';
-import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import UserMenu from '../user/UserMenu';
-import { useSession } from 'next-auth/react';
-import Loading from '../loading';
+import { usePathname } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContexts';
 
 export default function HomeHeader() {
   const pathname = usePathname();
-  const session = useSession();
-
-  function userMenu() {
-    if (session.status == 'loading') {
-      return <Loading className="w-8 h-8" title="Loading..." />;
-    }
-    if (session.status == 'authenticated') {
-      return (
-        <>
-          <Link
-            className={`home-header-big-link ${
-              pathname == '/workspace' ? 'active' : ''
-            }`}
-            href="/workspace"
-          >
-            <span>workspace</span>
-            <AiOutlineArrowRight />
-          </Link>
-          <UserMenu />
-        </>
-      );
-    }
-    return (
-      <>
-        <Link
-          className={`home-header-icon-link ${
-            pathname === '/signup' ? 'active' : ''
-          }`}
-          href="/signup"
-        >
-          <VscAccount />
-          <span>signup</span>
-        </Link>
-        <Link
-          className={`home-header-big-link ${
-            pathname == '/signin' ? 'active' : ''
-          }`}
-          href="/signin"
-        >
-          <span>sign in</span>
-          <AiOutlineArrowRight />
-        </Link>
-      </>
-    );
-  }
-
+  const session = useAuth()?.session;
   return (
     <header className="border-b border-b-gray200 h-[var(--header-height)]">
       <div className="w-11/12 container m-auto flex items-center justify-between text-zinc-400 fill-gray-400 p-1">
@@ -84,7 +37,41 @@ export default function HomeHeader() {
             features
           </Link>
         </div>
-        {userMenu()}
+        {(session && (
+          <>
+            <Link
+              className={`home-header-big-link ${
+                pathname == '/workspace' ? 'active' : ''
+              }`}
+              href="/workspace"
+            >
+              <span>workspace</span>
+              <AiOutlineArrowRight />
+            </Link>
+            <UserMenu session={session} />
+          </>
+        )) || (
+          <>
+            <Link
+              className={`home-header-icon-link ${
+                pathname === '/signup' ? 'active' : ''
+              }`}
+              href="/signup"
+            >
+              <VscAccount />
+              <span>signup</span>
+            </Link>
+            <Link
+              className={`home-header-big-link ${
+                pathname == '/signin' ? 'active' : ''
+              }`}
+              href="/signin"
+            >
+              <span>sign in</span>
+              <AiOutlineArrowRight />
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
