@@ -101,7 +101,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return await auth.signUp({
       email: email,
       password: password,
-      options: { data: { name: name } },
+      options: {
+        data: {
+          name: name,
+          avatar_url:
+            'https://ui-avatars.com/api/?background=random&size=96&format=png&name=' +
+            name,
+        },
+      },
     });
   };
 
