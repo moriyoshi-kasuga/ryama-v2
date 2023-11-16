@@ -1,5 +1,4 @@
 'use client';
-import { supabase } from '@/lib/supabase';
 import {
   ReactNode,
   useContext,
@@ -14,9 +13,17 @@ import {
   OAuthResponse,
   Session,
 } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase';
 
-type AuthCtx = {
+export type Profile = {
+  id: string;
+  name: string;
+  avatar_url: string;
+};
+
+export type AuthCtx = {
   session: Session | null;
+  profile: Profile | null;
   loading: boolean;
   setLoading: any;
   login: ({
@@ -37,16 +44,15 @@ type AuthCtx = {
   }) => Promise<AuthResponse>;
   google: () => Promise<OAuthResponse>;
   logout: () => Promise<{ error: AuthError | null }>;
-} | null;
+};
 
-const AuthContext = createContext<AuthCtx>(null);
+const AuthContext = createContext<AuthCtx>({} as AuthCtx);
 const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const auth = supabase.auth;
-
   const [loading, setLoading] = useState<boolean>(true);
   const [session, setSession] = useState<Session | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
 
   //session処理の実行中は画面を表示しないようにする
   useEffect(() => {
@@ -54,9 +60,17 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     (async () => {
       const {
         data: { session },
-      } = await auth.getSession();
+      } = await supabase.auth.getSession();
       if (mounted) {
         if (session) {
+          const { data: profile }: { data: Profile | null } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          if (profile) {
+            setProfile(profile);
+          }
           setSession(session);
         }
         setLoading(false);
@@ -64,16 +78,18 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     })();
     const {
       data: { subscription },
-    } = auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (_event === 'SIGNED_OUT') {
         setSession(null);
+        setProfile(null);
       }
     });
     return () => {
       mounted = false;
       subscription?.unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const login = async ({
     email,
@@ -82,11 +98,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string;
     password: string;
   }) => {
-    return await auth.signInWithPassword({ email: email, password: password });
+    return await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
   };
 
   const google = async () => {
-    return await auth.signInWithOAuth({ provider: 'google' });
+    return await supabase.auth.signInWithOAuth({ provider: 'google' });
   };
 
   const signup = async ({
@@ -98,7 +117,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     email: string;
     password: string;
   }) => {
-    return await auth.signUp({
+    return await supabase.auth.signUp({
       email: email,
       password: password,
       options: {
@@ -113,11 +132,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async () => {
-    return await auth.signOut();
+    return await supabase.auth.signOut();
   };
 
   const exposed: AuthCtx = {
     session,
+    profile,
     loading,
     setLoading,
     signup,

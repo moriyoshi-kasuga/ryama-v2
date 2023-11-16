@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContexts';
 
 export default function HomeHeader() {
   const pathname = usePathname();
-  const session = useAuth()?.session;
+  const { profile } = useAuth();
   return (
     <header className="border-b border-b-gray200 h-[var(--header-height)]">
       <div className="w-11/12 container m-auto flex items-center justify-between text-zinc-400 fill-gray-400 p-1">
@@ -37,7 +37,7 @@ export default function HomeHeader() {
             features
           </Link>
         </div>
-        {(session && (
+        {(profile && (
           <>
             <Link
               className={`home-header-big-link ${
@@ -48,7 +48,7 @@ export default function HomeHeader() {
               <span>workspace</span>
               <AiOutlineArrowRight />
             </Link>
-            <UserMenu session={session} />
+            <UserMenu profile={profile} />
           </>
         )) || (
           <>

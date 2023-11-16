@@ -1,12 +1,8 @@
 'use client';
+import { Profile } from '@/contexts/AuthContexts';
 
-import { Session } from '@supabase/supabase-js';
-
-export default function UserMenu({ session }: { session: Session | null }) {
-  if (!session) {
-    return null;
-  }
-  return <></>;
+export default function UserMenu({ profile }: { profile: Profile }) {
+  return <>{profile.name}</>;
   // TODO: ここでヘッダーに表示するユーザのハンバーガーメニューを作成する
   // settings だったり dark mod, light mode 切り替えやログアウトもここで実装する
 }
