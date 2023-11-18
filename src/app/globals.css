@@ -11,17 +11,9 @@
 }
 
 .home-header-icon-link {
-  @apply home-header-link flex items-center;
+  @apply uppercase px-2 font-medium text-sm hover:text-black transition [&.active]:text-red-500 flex items-center;
 }
 
 .home-header-big-link {
   @apply uppercase px-2 font-bold text-sm text-sky-500 hover:text-sky-600 transition [&.active]:text-red-500 flex items-center [&:first-child]:mr-1;
-}
-
-.page-center {
-  @apply w-screen h-screen flex justify-center items-center;
-}
-
-.loading {
-  @apply w-10 h-10;
 }

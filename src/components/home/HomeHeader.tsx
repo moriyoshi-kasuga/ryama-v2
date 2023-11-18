@@ -5,10 +5,11 @@ import Link from 'next/link';
 import UserMenu from '../user/UserMenu';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContexts';
+import Loading from '../loading';
 
 export default function HomeHeader() {
   const pathname = usePathname();
-  const { profile } = useAuth();
+  const { loading, profile } = useAuth();
   return (
     <header className="border-b border-b-gray200 h-[var(--header-height)]">
       <div className="w-11/12 container m-auto flex items-center justify-between text-zinc-400 fill-gray-400 p-1">
@@ -37,41 +38,42 @@ export default function HomeHeader() {
             features
           </Link>
         </div>
-        {(profile && (
-          <>
-            <Link
-              className={`home-header-big-link ${
-                pathname == '/workspace' ? 'active' : ''
-              }`}
-              href="/workspace"
-            >
-              <span>workspace</span>
-              <AiOutlineArrowRight />
-            </Link>
-            <UserMenu profile={profile} />
-          </>
-        )) || (
-          <>
-            <Link
-              className={`home-header-icon-link ${
-                pathname === '/signup' ? 'active' : ''
-              }`}
-              href="/signup"
-            >
-              <VscAccount />
-              <span>signup</span>
-            </Link>
-            <Link
-              className={`home-header-big-link ${
-                pathname == '/signin' ? 'active' : ''
-              }`}
-              href="/signin"
-            >
-              <span>sign in</span>
-              <AiOutlineArrowRight />
-            </Link>
-          </>
-        )}
+        {(loading && <Loading title="Loading..." className="w-6 h-6" />) ||
+          (profile && (
+            <>
+              <Link
+                className={`home-header-big-link ${
+                  pathname == '/workspace' ? 'active' : ''
+                }`}
+                href="/workspace"
+              >
+                <span>workspace</span>
+                <AiOutlineArrowRight />
+              </Link>
+              <UserMenu profile={profile} />
+            </>
+          )) || (
+            <>
+              <Link
+                className={`home-header-icon-link ${
+                  pathname === '/signup' ? 'active' : ''
+                }`}
+                href="/signup"
+              >
+                <VscAccount />
+                <span>signup</span>
+              </Link>
+              <Link
+                className={`home-header-big-link ${
+                  pathname == '/signin' ? 'active' : ''
+                }`}
+                href="/signin"
+              >
+                <span>sign in</span>
+                <AiOutlineArrowRight />
+              </Link>
+            </>
+          )}
       </div>
     </header>
   );

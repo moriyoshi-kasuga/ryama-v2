@@ -1,6 +1,7 @@
 'use client';
 import { useAuth } from '@/contexts/AuthContexts';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 export default function Page() {
   const auth = useAuth();
@@ -10,7 +11,17 @@ export default function Page() {
         <h1>Home</h1>
         <Link href="/signin">Sign in</Link>
         <Link href="/signup">Sign up</Link>
-        <button onClick={() => auth?.logout()}>Logout</button>
+        <button
+          onClick={async () => {
+            await auth.logout();
+            toast.success('Logged out!', {
+              duration: 3000,
+              position: 'top-center',
+            });
+          }}
+        >
+          Logout
+        </button>
       </div>
     </>
   );

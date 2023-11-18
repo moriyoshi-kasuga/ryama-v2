@@ -130,7 +130,6 @@ url = ""
 enabled = true
 client_id = "env(GOOGLE_CLIENT_ID)"
 secret = "env(GOOGLE_CLIENT_SECRET)"
-redirect_uri = "env(NEXT_PUBLIC_SUPABASE_REDIRECT_URL)"
 
 [analytics]
 enabled = false
