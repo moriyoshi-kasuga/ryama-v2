@@ -8,12 +8,13 @@ export default function Loading({
   className?: string;
 }) {
   return (
-    <div className="flex justify-center items-center">
+    <div className='flex items-center justify-center'>
       <div className={`relative ${className}`}>
         <Image
-          src="/loading.svg"
+          src='/loading.svg'
           unoptimized
-          alt="loading"
+          priority
+          alt='loading'
           fill
           style={{ objectFit: 'contain' }}
         />

@@ -4,35 +4,40 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && prisma db push && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "primig": "prisma migrate dev --name migrate",
-    "prigen": "prisma generate",
-    "priup": "npm run primig && npm run prigen"
+    "lint": "next lint --no-cache",
+    "format": "prettier --write --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx,json,css}' && next lint --fix",
+    "schema": "supabase gen types typescript --local > ./src/lib/schema.ts && npx better-supabase-types -i ./src/lib/schema.ts -f"
   },
   "dependencies": {
-    "@auth/prisma-adapter": "^1.0.6",
-    "@prisma/client": "^5.5.2",
+    "@supabase/ssr": "^0.0.10",
     "@supabase/supabase-js": "^2.38.4",
     "bcrypt": "^5.1.1",
     "next": "14.0.1",
-    "next-auth": "^4.24.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^4.11.0"
+    "react-hook-form": "^7.48.2",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^4.11.0",
+    "zod": "^3.22.4",
+    "zod-form-data": "^2.0.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
     "autoprefixer": "^10.0.1",
+    "better-supabase-types": "^2.6.3",
     "eslint": "^8",
     "eslint-config-next": "14.0.1",
     "eslint-config-prettier": "^9.0.0",
     "postcss": "^8",
-    "prisma": "^5.5.2",
+    "prettier-plugin-tailwindcss": "^0.5.7",
+    "supabase": "^1.112.0",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
