@@ -11,41 +11,35 @@ export default function HomeHeader() {
   const pathname = usePathname();
   const { loading, profile } = useAuth();
   return (
-    <header className="border-b border-b-gray200 h-[var(--header-height)]">
-      <div className="w-11/12 container m-auto flex items-center justify-between text-zinc-400 fill-gray-400 p-1">
-        <div className="flex items-center">
-          <Link className="flex items-center transition-colors" href="/">
-            <h1 className="mx-4 text-2xl text-black font-sans font-thin">
-              RYAMA
-            </h1>
+    <header className='border-b-gray200 h-[var(--header-height)] border-b'>
+      <div className='container m-auto flex w-11/12 items-center justify-between fill-gray-400 p-1 text-zinc-400'>
+        <div className='flex items-center'>
+          <Link className='flex items-center transition-colors' href='/'>
+            <h1 className='mx-4 font-sans text-2xl font-thin text-black'>RYAMA</h1>
           </Link>
         </div>
-        <div className="ml-auto hidden sm:flex items-center">
+        <div className='ml-auto hidden items-center sm:flex'>
           <Link
-            className={`home-header-link ${
-              pathname === '/public' ? 'active' : ''
-            }`}
-            href="/public"
+            className={`home-header-link ${pathname === '/public' ? 'active' : ''}`}
+            href='/public'
           >
             public
           </Link>
           <Link
-            className={`home-header-link ${
-              pathname === '/features' ? 'active' : ''
-            }`}
-            href="/features"
+            className={`home-header-link ${pathname === '/features' ? 'active' : ''}`}
+            href='/features'
           >
             features
           </Link>
         </div>
-        {(loading && <Loading title="Loading..." className="w-6 h-6" />) ||
+        {(loading && <Loading title='Loading...' className='h-6 w-6' />) ||
           (profile && (
             <>
               <Link
                 className={`home-header-big-link ${
                   pathname == '/workspace' ? 'active' : ''
                 }`}
-                href="/workspace"
+                href='/workspace'
               >
                 <span>workspace</span>
                 <AiOutlineArrowRight />
@@ -58,7 +52,7 @@ export default function HomeHeader() {
                 className={`home-header-icon-link ${
                   pathname === '/signup' ? 'active' : ''
                 }`}
-                href="/signup"
+                href='/signup'
               >
                 <VscAccount />
                 <span>signup</span>
@@ -67,7 +61,7 @@ export default function HomeHeader() {
                 className={`home-header-big-link ${
                   pathname == '/signin' ? 'active' : ''
                 }`}
-                href="/signin"
+                href='/signin'
               >
                 <span>sign in</span>
                 <AiOutlineArrowRight />

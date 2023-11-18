@@ -7,16 +7,17 @@ export default function Page() {
   const auth = useAuth();
   return (
     <>
-      <div className="flex flex-col justify-center mx-auto w-full h-full items-center">
+      <div className='mx-auto flex h-full w-full flex-col items-center justify-center'>
         <h1>Home</h1>
-        <Link href="/signin">Sign in</Link>
-        <Link href="/signup">Sign up</Link>
+        <Link href='/signin'>Sign in</Link>
+        <Link href='/signup'>Sign up</Link>
         <button
-          onClick={async () => {
-            await auth.logout();
-            toast.success('Logged out!', {
-              duration: 3000,
-              position: 'top-center',
+          onClick={() => {
+            void auth.logout().then(() => {
+              toast.success('Logged out!', {
+                duration: 3000,
+                position: 'top-center',
+              });
             });
           }}
         >

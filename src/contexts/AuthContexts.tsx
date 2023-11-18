@@ -1,11 +1,5 @@
 'use client';
-import {
-  ReactNode,
-  useContext,
-  createContext,
-  useEffect,
-  useState,
-} from 'react';
+import { ReactNode, useContext, createContext, useEffect, useState } from 'react';
 import {
   AuthError,
   AuthResponse,
@@ -15,18 +9,12 @@ import {
 } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { getURL } from '@/utils/utils';
-
-export type Profile = {
-  id: string;
-  name: string;
-  avatar_url: string;
-};
+import { Profiles } from '@/lib/schema';
 
 export type AuthCtx = {
   session: Session | null;
-  profile: Profile | null;
+  profile: Profiles | null;
   loading: boolean;
-  setLoading: any;
   login: ({
     email,
     password,
@@ -53,7 +41,7 @@ const useAuth = () => useContext(AuthContext);
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [session, setSession] = useState<Session | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profile, setProfile] = useState<Profiles | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -64,7 +52,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
           .select('*')
           .eq('id', session.user.id)
           .single()
-          .then(({ data: profile }: { data: Profile | null }) => {
+          .then(({ data: profile }: { data: Profiles | null }) => {
             setProfile(profile);
           });
       }
@@ -83,7 +71,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         .select('*')
         .eq('id', session.user.id)
         .single()
-        .then(({ data: profile }: { data: Profile | null }) => {
+        .then(({ data: profile }: { data: Profiles | null }) => {
           setProfile(profile);
         });
     });
@@ -92,13 +80,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  const login = async ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) => {
+  const login = async ({ email, password }: { email: string; password: string }) => {
     return await supabase.auth.signInWithPassword({
       email: email,
       password: password,
@@ -145,15 +127,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     session,
     profile,
     loading,
-    setLoading,
     signup,
     login,
     google,
     logout,
   };
-  return (
-    <AuthContext.Provider value={exposed}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={exposed}>{children}</AuthContext.Provider>;
 };
 
 export { useAuth, AuthProvider };

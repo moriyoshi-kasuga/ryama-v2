@@ -255,8 +255,7 @@ export interface Database {
 
 // Schema: graphql_public
 // Functions
-export type ArgsGraphql =
-  Database['graphql_public']['Functions']['graphql']['Args'];
+export type ArgsGraphql = Database['graphql_public']['Functions']['graphql']['Args'];
 export type ReturnTypeGraphql =
   Database['graphql_public']['Functions']['graphql']['Returns'];
 
@@ -273,10 +272,8 @@ export type InsertBuckets = Database['storage']['Tables']['buckets']['Insert'];
 export type UpdateBuckets = Database['storage']['Tables']['buckets']['Update'];
 
 export type Migrations = Database['storage']['Tables']['migrations']['Row'];
-export type InsertMigrations =
-  Database['storage']['Tables']['migrations']['Insert'];
-export type UpdateMigrations =
-  Database['storage']['Tables']['migrations']['Update'];
+export type InsertMigrations = Database['storage']['Tables']['migrations']['Insert'];
+export type UpdateMigrations = Database['storage']['Tables']['migrations']['Update'];
 
 export type Objects = Database['storage']['Tables']['objects']['Row'];
 export type InsertObjects = Database['storage']['Tables']['objects']['Insert'];
@@ -288,17 +285,14 @@ export type ArgsCanInsertObject =
 export type ReturnTypeCanInsertObject =
   Database['storage']['Functions']['can_insert_object']['Returns'];
 
-export type ArgsExtension =
-  Database['storage']['Functions']['extension']['Args'];
+export type ArgsExtension = Database['storage']['Functions']['extension']['Args'];
 export type ReturnTypeExtension =
   Database['storage']['Functions']['extension']['Returns'];
 
 export type ArgsFilename = Database['storage']['Functions']['filename']['Args'];
-export type ReturnTypeFilename =
-  Database['storage']['Functions']['filename']['Returns'];
+export type ReturnTypeFilename = Database['storage']['Functions']['filename']['Returns'];
 
-export type ArgsFoldername =
-  Database['storage']['Functions']['foldername']['Args'];
+export type ArgsFoldername = Database['storage']['Functions']['foldername']['Args'];
 export type ReturnTypeFoldername =
   Database['storage']['Functions']['foldername']['Returns'];
 
@@ -308,5 +302,4 @@ export type ReturnTypeGetSizeByBucket =
   Database['storage']['Functions']['get_size_by_bucket']['Returns'];
 
 export type ArgsSearch = Database['storage']['Functions']['search']['Args'];
-export type ReturnTypeSearch =
-  Database['storage']['Functions']['search']['Returns'];
+export type ReturnTypeSearch = Database['storage']['Functions']['search']['Returns'];

@@ -11,13 +11,9 @@ export const metadata: Metadata = {
   description: 'RYAMA を next.js で作り、機能を追加したりなどしたものです。',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body className={inter.className}>
         <AuthProvider>{children}</AuthProvider>
         <Toaster />

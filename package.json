@@ -4,12 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && prisma db push && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "primig": "prisma migrate dev --name migrate",
-    "prigen": "prisma generate",
-    "priup": "npm run primig && npm run prigen"
+    "lint": "next lint --no-cache",
+    "format": "prettier --write --ignore-path .gitignore 'src/**/*.{js,jsx,ts,tsx,json,css}' && next lint --fix",
+    "schema": "supabase gen types typescript --local > ./src/lib/schema.ts && npx better-supabase-types -i ./src/lib/schema.ts -f"
   },
   "dependencies": {
     "@supabase/ssr": "^0.0.10",
@@ -29,11 +28,15 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
     "autoprefixer": "^10.0.1",
+    "better-supabase-types": "^2.6.3",
     "eslint": "^8",
     "eslint-config-next": "14.0.1",
     "eslint-config-prettier": "^9.0.0",
     "postcss": "^8",
+    "prettier-plugin-tailwindcss": "^0.5.7",
     "supabase": "^1.112.0",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
