@@ -11,10 +11,13 @@
     "schema": "supabase gen types typescript --local > ./src/lib/schema.ts && npx better-supabase-types -i ./src/lib/schema.ts -f"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.2.9",
     "@supabase/ssr": "^0.0.10",
     "@supabase/supabase-js": "^2.38.4",
     "bcrypt": "^5.1.1",
+    "framer-motion": "^10.16.5",
     "next": "14.0.1",
+    "next-themes": "^0.2.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.48.2",
