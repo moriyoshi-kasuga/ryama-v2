@@ -1,4 +1,6 @@
 'use client';
+
+import { ThemeProvider } from 'next-themes';
 import { ReactNode, useContext, createContext, useEffect, useState } from 'react';
 import {
   AuthError,
@@ -7,15 +9,15 @@ import {
   OAuthResponse,
   Session,
 } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
-import { getURL } from '@/utils/utils';
+import { getSiteURL } from '@/utils/utils';
 import { Profiles } from '@/lib/schema';
+import { supabase } from '@/lib/supabase';
 
 export type AuthCtx = {
   session: Session | null;
   profile: Profiles | null;
   loading: boolean;
-  login: ({
+  signin: ({
     email,
     password,
   }: {
@@ -32,13 +34,13 @@ export type AuthCtx = {
     password: string;
   }) => Promise<AuthResponse>;
   google: () => Promise<OAuthResponse>;
-  logout: () => Promise<{ error: AuthError | null }>;
+  signOut: () => Promise<{ error: AuthError | null }>;
 };
 
 const AuthContext = createContext<AuthCtx>({} as AuthCtx);
 const useAuth = () => useContext(AuthContext);
 
-const AuthProvider = ({ children }: { children: ReactNode }) => {
+const Providers = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profiles | null>(null);
@@ -78,9 +80,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [supabase]);
 
-  const login = async ({ email, password }: { email: string; password: string }) => {
+  const signin = async ({ email, password }: { email: string; password: string }) => {
     return await supabase.auth.signInWithPassword({
       email: email,
       password: password,
@@ -91,7 +93,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: getURL('workspace'),
+        redirectTo: getSiteURL('workspace'),
       },
     });
   };
@@ -119,7 +121,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const logout = async () => {
+  const signOut = async () => {
     return await supabase.auth.signOut();
   };
 
@@ -128,11 +130,15 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     profile,
     loading,
     signup,
-    login,
+    signin,
     google,
-    logout,
+    signOut,
   };
-  return <AuthContext.Provider value={exposed}>{children}</AuthContext.Provider>;
+  return (
+    <ThemeProvider attribute='class'>
+      <AuthContext.Provider value={exposed}>{children}</AuthContext.Provider>
+    </ThemeProvider>
+  );
 };
 
-export { useAuth, AuthProvider };
+export { useAuth, Providers };

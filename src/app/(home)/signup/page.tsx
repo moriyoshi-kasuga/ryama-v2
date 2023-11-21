@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@/contexts/AuthContexts';
+import { useAuth } from '@/app/providers';
 import { createZodErrorMap } from '@/utils/zod';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -69,7 +69,7 @@ export default function Page() {
             onClick={() => handleGoogle()}
             className='relative w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50'
           >
-            <span className='absolute left-3 top-1/2 h-6 w-6 -translate-y-1/2 bg-[url("/google.svg")] bg-cover bg-center'></span>
+            <span className='absolute left-3 top-1/2 h-6 w-6 -translate-y-1/2 bg-[url("/images/google.svg")] bg-cover bg-center'></span>
             <span className=''>Sign up with Google</span>
           </button>
           <div className='mx-auto my-4 text-center'>or</div>

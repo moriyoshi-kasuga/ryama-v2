@@ -13,7 +13,7 @@
   "dependencies": {
     "@nextui-org/react": "^2.2.9",
     "@supabase/ssr": "^0.0.10",
-    "@supabase/supabase-js": "^2.38.4",
+    "@supabase/supabase-js": "^2.38.5",
     "bcrypt": "^5.1.1",
     "framer-motion": "^10.16.5",
     "next": "14.0.1",

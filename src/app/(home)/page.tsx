@@ -1,5 +1,5 @@
 'use client';
-import { useAuth } from '@/contexts/AuthContexts';
+import { useAuth } from '@/app/providers';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
@@ -13,7 +13,7 @@ export default function Page() {
         <Link href='/signup'>Sign up</Link>
         <button
           onClick={() => {
-            void auth.logout().then(() => {
+            auth.signOut().then(() => {
               toast.success('Logged out!', {
                 duration: 3000,
                 position: 'top-center',
