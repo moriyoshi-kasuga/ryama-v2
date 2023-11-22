@@ -19,7 +19,7 @@ export default function UserMenu({ profile }: { profile: Profiles }) {
       showArrow
       radius='sm'
       classNames={{
-        base: 'before:bg-default-200', // change arrow background
+        base: 'before:bg-default-200',
         content: 'p-0 border-small border-divider bg-background',
       }}
     >

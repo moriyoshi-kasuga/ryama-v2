@@ -11,7 +11,7 @@ import {
 } from '@supabase/supabase-js';
 import { getSiteURL } from '@/utils/utils';
 import { Profiles } from '@/lib/schema';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { createClientSupabase } from '@/lib/supabase/client';
 
 export type AuthCtx = {
@@ -88,7 +88,8 @@ const Providers = ({ children }: { children: ReactNode }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [supabase]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const signin = async ({ email, password }: { email: string; password: string }) => {
     return await supabase.auth.signInWithPassword({
