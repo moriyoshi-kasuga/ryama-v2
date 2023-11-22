@@ -144,7 +144,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
     signOut,
   };
   return (
-    <ThemeProvider attribute='class'>
+    <ThemeProvider attribute='class' enableSystem={false}>
       <AuthContext.Provider value={exposed}>{children}</AuthContext.Provider>
     </ThemeProvider>
   );

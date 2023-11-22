@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/app/providers';
 import { createZodErrorMap } from '@/utils/zod';
+import { Divider, Input } from '@nextui-org/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -62,56 +63,38 @@ export default function Page() {
       <div className='py-6 sm:mx-auto sm:w-full sm:max-w-sm'>
         <h1 className='pb-8 text-center text-6xl font-thin'>Sign in</h1>
         <button
-          onClick={() => {
-            handleGoogle();
-          }}
-          className='relative w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50'
+          onClick={() => handleGoogle()}
+          className='relative w-full rounded-md border border-default-300 bg-background px-4 py-2 text-sm font-medium text-default-500 hover:bg-default-50'
         >
           <span className='absolute left-3 top-1/2 h-6 w-6 -translate-y-1/2 bg-[url("/images/google.svg")] bg-cover bg-center'></span>
-          <span>Sign in with Google</span>
+          <span className=''>Sign up with Google</span>
         </button>
-        <div className='mb-6 mt-4'>
-          <div className='h-10 rounded border border-red-300 bg-red-50 p-2 text-center text-sm text-red-400 empty:hidden'>
+        <Divider className='my-4' />
+        <div className={`mb-2 ${error ? 'block' : 'hidden'}`}>
+          <div className='rounded border border-danger-300 bg-danger-50 p-2 text-center text-sm text-danger-400'>
             {error}
           </div>
         </div>
         <form onSubmit={handleSubmit(submit)} className='space-y-3' noValidate>
-          <div>
-            <label htmlFor='email' className='block py-2 font-medium text-gray-600'>
-              Email
-            </label>
-            <input
-              type='email'
-              {...register('email')}
-              className='block w-full rounded-lg border border-gray-50 bg-gray-100 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
-              placeholder='email'
-              id='email'
-            />
-          </div>
-          <div>
-            <label htmlFor='password' className='block py-2 font-medium text-gray-600'>
-              Password
-            </label>
-            <input
-              type='password'
-              {...register('password')}
-              className='block w-full rounded-lg border border-gray-50 bg-gray-100 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
-              placeholder='password'
-              id='password'
-            />
-          </div>
+          <Input type='email' label='email' {...register('email')} id='email' />
+          <Input
+            type='password'
+            label='password'
+            {...register('password')}
+            id='password'
+          />
           <button
             type='submit'
-            className='w-full rounded-md bg-blue-500 px-5 py-3 text-center  text-white  hover:bg-blue-600  hover:outline-none hover:ring-2 hover:ring-blue-300'
+            className='w-full rounded-md bg-primary-400 px-5 py-3 text-center text-default-800  transition  hover:bg-primary-500 hover:outline-none'
           >
             Sign in
           </button>
           <div className='my-8 text-sm font-medium leading-6'>
-            <p className='text-center text-gray-500'>
+            <p className='text-center text-default-500'>
               {"Don't have an account? "}
               <Link
                 href='/signup'
-                className='text-blue-300 transition-colors duration-300 hover:text-blue-500'
+                className='text-secondary-400 transition-colors duration-300 hover:text-secondary-500'
               >
                 Create an account
               </Link>

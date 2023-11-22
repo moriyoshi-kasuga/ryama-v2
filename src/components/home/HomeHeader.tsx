@@ -1,9 +1,11 @@
 'use client';
+import { FaGithub } from 'react-icons/fa';
 import { VscAccount } from 'react-icons/vsc';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
+import ThemeButton from '../ThemeButton';
 
 export default function HomeHeader() {
   const pathname = usePathname();
@@ -27,6 +29,14 @@ export default function HomeHeader() {
           </Link>
         </div>
         <div className='ml-auto hidden items-center sm:flex'>
+          <div className='mx-5 my-auto flex items-center [&>*]:mx-1 [&_svg]:h-[calc(var(--header-height)*0.6)] [&_svg]:w-[calc(var(--header-height)*0.6)]'>
+            <button
+              onClick={() => window.open('https://github.com/moriyoshi-kasuga/ryama-v2')}
+            >
+              <FaGithub />
+            </button>
+            <ThemeButton />
+          </div>
           {getLink('/public')}
           {getLink('/features')}
           {getLink(
