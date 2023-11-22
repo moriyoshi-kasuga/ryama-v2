@@ -11,7 +11,8 @@ import {
 } from '@supabase/supabase-js';
 import { getSiteURL } from '@/utils/utils';
 import { Profiles } from '@/lib/schema';
-import { supabase } from '@/lib/supabase';
+import { redirect, useRouter } from 'next/navigation';
+import { createClientSupabase } from '@/lib/supabase/client';
 
 export type AuthCtx = {
   session: Session | null;
@@ -41,9 +42,12 @@ const AuthContext = createContext<AuthCtx>({} as AuthCtx);
 const useAuth = () => useContext(AuthContext);
 
 const Providers = ({ children }: { children: ReactNode }) => {
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profiles | null>(null);
+
+  const supabase = createClientSupabase();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -64,6 +68,10 @@ const Providers = ({ children }: { children: ReactNode }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      if (_event === 'SIGNED_OUT') {
+        router.push('/signin');
+        return;
+      }
       if (!session) {
         setProfile(null);
         return;

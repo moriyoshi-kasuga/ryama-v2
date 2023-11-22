@@ -3,9 +3,21 @@ import { VscAccount } from 'react-icons/vsc';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import React from 'react';
 
 export default function HomeHeader() {
   const pathname = usePathname();
+  const getLink = (href: string, inner?: React.ReactNode) => {
+    return (
+      <Link
+        className={`home-header-link ${pathname === href ? 'active' : ''}`}
+        href={href}
+      >
+        {inner ?? href.replace('/', '')}
+      </Link>
+    );
+  };
+
   return (
     <header className='h-[var(--header-height)] border-b border-b-divider'>
       <div className='container m-auto flex w-11/12 items-center justify-between p-1 text-default-400'>
@@ -15,33 +27,23 @@ export default function HomeHeader() {
           </Link>
         </div>
         <div className='ml-auto hidden items-center sm:flex'>
-          <Link
-            className={`home-header-link ${pathname === '/public' ? 'active' : ''}`}
-            href='/public'
-          >
-            public
-          </Link>
-          <Link
-            className={`home-header-link ${pathname === '/features' ? 'active' : ''}`}
-            href='/features'
-          >
-            features
-          </Link>
+          {getLink('/public')}
+          {getLink('/features')}
+          {getLink(
+            '/signup',
+            <>
+              <VscAccount />
+              <span>signup</span>
+            </>,
+          )}
+          {getLink(
+            '/signin',
+            <>
+              <span>sign in</span>
+              <AiOutlineArrowRight />
+            </>,
+          )}
         </div>
-        <Link
-          className={`home-header-link ${pathname === '/signup' ? 'active' : ''}`}
-          href='/signup'
-        >
-          <VscAccount />
-          <span>signup</span>
-        </Link>
-        <Link
-          className={`home-header-link ${pathname == '/signin' ? 'active' : ''}`}
-          href='/signin'
-        >
-          <span>sign in</span>
-          <AiOutlineArrowRight />
-        </Link>
       </div>
     </header>
   );

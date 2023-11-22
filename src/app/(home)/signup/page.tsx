@@ -3,7 +3,7 @@
 import { useAuth } from '@/app/providers';
 import { createZodErrorMap } from '@/utils/zod';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -25,6 +25,7 @@ type Copy = z.infer<typeof schema>;
 
 export default function Page() {
   const auth = useAuth();
+  const router = useRouter();
   const [error, setError] = useState('');
 
   const { register, handleSubmit } = useForm<Copy>({});
@@ -47,7 +48,7 @@ export default function Page() {
       duration: 3000,
       position: 'top-center',
     });
-    redirect('/workspace');
+    router.push('/workspace');
   };
 
   const handleGoogle = async () => {
