@@ -7,13 +7,5 @@
 }
 
 .home-header-link {
-  @apply px-2 text-sm font-medium uppercase transition hover:text-black [&.active]:text-red-500;
-}
-
-.home-header-icon-link {
-  @apply flex items-center px-2 text-sm font-medium uppercase transition hover:text-black [&.active]:text-red-500;
-}
-
-.home-header-big-link {
-  @apply flex items-center px-2 text-sm font-bold uppercase text-sky-500 transition hover:text-sky-600 [&.active]:text-red-500 [&:first-child]:mr-1;
+  @apply flex items-center px-2 text-medium uppercase text-foreground opacity-80 transition-opacity hover:opacity-60 [&.active]:text-primary;
 }

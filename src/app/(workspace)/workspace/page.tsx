@@ -3,7 +3,7 @@
 export default function Page() {
   return (
     <>
-      <h1>Workspace</h1>
+      <p>This is WorkSpace content</p>
     </>
   );
 }

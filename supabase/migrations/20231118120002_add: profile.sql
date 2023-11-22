@@ -1,6 +1,6 @@
 create table public.profiles (
   id uuid not null references auth.users on delete cascade,
-  name text not null,
+  name text not null unique,
   avatar_url text not null,
 
   primary key (id)

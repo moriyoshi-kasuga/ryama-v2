@@ -1,3 +1,4 @@
+'use client';
 import HomeHeader from '@/components/home/HomeHeader';
 import HomeFooter from '@/components/home/HomeFooter';
 

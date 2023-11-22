@@ -1,4 +1,6 @@
 'use client';
+
+import { ThemeProvider } from 'next-themes';
 import { ReactNode, useContext, createContext, useEffect, useState } from 'react';
 import {
   AuthError,
@@ -7,15 +9,16 @@ import {
   OAuthResponse,
   Session,
 } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
-import { getURL } from '@/utils/utils';
 import { Profiles } from '@/lib/schema';
+import { useRouter } from 'next/navigation';
+import { createClientSupabase } from '@/lib/supabase/client';
+import { getSiteURL } from '@/utils/utils';
 
 export type AuthCtx = {
   session: Session | null;
   profile: Profiles | null;
   loading: boolean;
-  login: ({
+  signin: ({
     email,
     password,
   }: {
@@ -32,16 +35,19 @@ export type AuthCtx = {
     password: string;
   }) => Promise<AuthResponse>;
   google: () => Promise<OAuthResponse>;
-  logout: () => Promise<{ error: AuthError | null }>;
+  signOut: () => Promise<{ error: AuthError | null }>;
 };
 
 const AuthContext = createContext<AuthCtx>({} as AuthCtx);
 const useAuth = () => useContext(AuthContext);
 
-const AuthProvider = ({ children }: { children: ReactNode }) => {
+const Providers = ({ children }: { children: ReactNode }) => {
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profiles | null>(null);
+
+  const supabase = createClientSupabase();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -62,6 +68,10 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      if (_event === 'SIGNED_OUT') {
+        router.push('/signin');
+        return;
+      }
       if (!session) {
         setProfile(null);
         return;
@@ -78,9 +88,10 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       subscription.unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const login = async ({ email, password }: { email: string; password: string }) => {
+  const signin = async ({ email, password }: { email: string; password: string }) => {
     return await supabase.auth.signInWithPassword({
       email: email,
       password: password,
@@ -91,7 +102,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: getURL('workspace'),
+        redirectTo: getSiteURL('auth/callback?next=workspace'),
       },
     });
   };
@@ -109,6 +120,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       email: email,
       password: password,
       options: {
+        emailRedirectTo: getSiteURL('auth/confirm?next=' + getSiteURL('workspace')),
         data: {
           name: name,
           avatar_url:
@@ -119,7 +131,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
-  const logout = async () => {
+  const signOut = async () => {
     return await supabase.auth.signOut();
   };
 
@@ -128,11 +140,15 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     profile,
     loading,
     signup,
-    login,
+    signin,
     google,
-    logout,
+    signOut,
   };
-  return <AuthContext.Provider value={exposed}>{children}</AuthContext.Provider>;
+  return (
+    <ThemeProvider attribute='class' enableSystem={false}>
+      <AuthContext.Provider value={exposed}>{children}</AuthContext.Provider>
+    </ThemeProvider>
+  );
 };
 
-export { useAuth, AuthProvider };
+export { useAuth, Providers };
