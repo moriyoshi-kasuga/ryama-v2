@@ -1,5 +1,4 @@
 'use client';
-import { Profiles } from '@/lib/schema';
 import React from 'react';
 import {
   Dropdown,
@@ -12,8 +11,10 @@ import {
 } from '@nextui-org/react';
 import { AiFillApi } from 'react-icons/ai';
 import { RxHamburgerMenu } from 'react-icons/rx';
+import { useAuth } from '@/app/providers';
 
-export default function UserMenu({ profile }: { profile: Profiles }) {
+export default function UserMenu() {
+  const { profile, signOut } = useAuth();
   return (
     <Dropdown
       showArrow
@@ -49,14 +50,14 @@ export default function UserMenu({ profile }: { profile: Profiles }) {
         <DropdownSection aria-label='Profile & Actions'>
           <DropdownItem key='profile' className='h-14 gap-2'>
             <User
-              name={profile.name}
+              name={profile?.name}
               classNames={{
                 name: 'text-default-600',
                 description: 'text-default-500',
               }}
               avatarProps={{
                 size: 'sm',
-                src: profile.avatar_url,
+                src: profile?.avatar_url,
               }}
             />
           </DropdownItem>
@@ -96,7 +97,9 @@ export default function UserMenu({ profile }: { profile: Profiles }) {
 
         <DropdownSection aria-label='Help & Feedback'>
           <DropdownItem key='help_and_feedback'>Help & Feedback</DropdownItem>
-          <DropdownItem key='logout'>Log Out</DropdownItem>
+          <DropdownItem key='logout' onClick={() => signOut()}>
+            Log Out
+          </DropdownItem>
         </DropdownSection>
       </DropdownMenu>
     </Dropdown>
