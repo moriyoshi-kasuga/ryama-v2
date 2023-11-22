@@ -6,7 +6,8 @@ import React from 'react';
 export default function WorkSpaceLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Header>{children}</Header>
+      <Header />
+      {children}
     </>
   );
 }
