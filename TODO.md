@@ -44,3 +44,6 @@ TODO: とりあえず write と preview を作成してあとでいろいろと�
 
 **explorer とかではなく、 workspace を作れば全部解決,<br>
 file share とかは workspace 全体で設定すればいい,**
+
+docuemnt,direcotyrとかではなく、全てdocuemntというふうにして、childrenがいるかどうかでiconを変更して、
+そうしたほうがその括りに対しても説明がつけれるからそうしよう。
