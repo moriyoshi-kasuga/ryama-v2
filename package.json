@@ -11,6 +11,7 @@
     "schema": "supabase gen types typescript --local > ./src/lib/schema.ts && npx better-supabase-types -i ./src/lib/schema.ts -f"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
     "@nextui-org/react": "^2.2.9",
     "@supabase/ssr": "^0.0.10",
     "@supabase/supabase-js": "^2.38.5",

@@ -33,9 +33,9 @@ export default function HomeHeader() {
             <button
               onClick={() => window.open('https://github.com/moriyoshi-kasuga/ryama-v2')}
             >
-              <FaGithub />
+              <FaGithub className='clickable' />
             </button>
-            <ThemeButton />
+            <ThemeButton className='clickable' />
           </div>
           {getLink('/public')}
           {getLink('/features')}

@@ -6,6 +6,14 @@
   --header-height: 40px;
 }
 
-.home-header-link {
-  @apply flex items-center px-2 text-medium uppercase text-foreground opacity-80 transition-opacity hover:opacity-60 [&.active]:text-primary;
+@layer base {
+  .clickable {
+    @apply cursor-pointer opacity-80 transition-opacity hover:opacity-60;
+  }
+}
+
+@layer components {
+  .home-header-link {
+    @apply clickable flex items-center px-2 text-medium uppercase text-foreground [&.active]:text-primary;
+  }
 }

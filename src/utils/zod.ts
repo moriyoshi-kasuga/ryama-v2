@@ -18,3 +18,10 @@ export function createZodErrorMap(name: string): z.ZodErrorMap {
     return { message: ctx.defaultError };
   };
 }
+
+export function excludeSpecialChars(zod: z.ZodString) {
+  return zod.regex(/^[a-zA-Z0-9_-]+$/, {
+    message:
+      'using only letters, numbers, and basic punctuation marks such as hyphens and underscores',
+  });
+}

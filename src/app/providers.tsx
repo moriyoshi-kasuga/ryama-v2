@@ -13,6 +13,7 @@ import { Profiles } from '@/lib/schema';
 import { useRouter } from 'next/navigation';
 import { createClientSupabase } from '@/lib/supabase/client';
 import { getSiteURL } from '@/utils/utils';
+import { Toaster } from 'react-hot-toast';
 
 export type AuthCtx = {
   session: Session | null;
@@ -69,6 +70,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (_event === 'SIGNED_OUT') {
+        setProfile(null);
         router.push('/signin');
         return;
       }
@@ -145,8 +147,9 @@ const Providers = ({ children }: { children: ReactNode }) => {
     signOut,
   };
   return (
-    <ThemeProvider attribute='class' enableSystem={false}>
+    <ThemeProvider attribute='class' enableSystem={true}>
       <AuthContext.Provider value={exposed}>{children}</AuthContext.Provider>
+      <Toaster />
     </ThemeProvider>
   );
 };

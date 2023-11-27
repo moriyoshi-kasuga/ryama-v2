@@ -1,7 +1,9 @@
 'use client';
 
 import { useAuth } from '@/app/providers';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { createZodErrorMap } from '@/utils/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Divider, Input } from '@nextui-org/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -24,16 +26,18 @@ export default function Page() {
   const auth = useAuth();
   const router = useRouter();
   const [error, setError] = useState('');
+  const [isVisible, setIsVisiable] = useState(false);
 
-  const { register, handleSubmit } = useForm<Copy>({});
+  const toggleVisibility = () => setIsVisiable(!isVisible);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Copy>({ resolver: zodResolver(schema) });
 
   const submit = async (data: Copy) => {
-    const ref = await schema.safeParseAsync(data);
-    if (!ref.success) {
-      setError(ref.error.errors[0].message);
-      return;
-    }
-    const { email, password } = ref.data;
+    const { email, password } = data;
     const res = await auth.signin({ email, password });
     const error = res.error?.message;
     if (error) {
@@ -59,9 +63,12 @@ export default function Page() {
   };
 
   return (
-    <div className='flex min-h-full flex-col justify-center px-6 lg:px-8'>
-      <div className='py-6 sm:mx-auto sm:w-full sm:max-w-sm'>
-        <h1 className='pb-8 text-center text-6xl font-thin'>Sign in</h1>
+    <div className='flex h-full flex-col justify-center'>
+      <div className='mx-auto w-5/6 max-w-sm  py-6'>
+        <h1 className='pb-7 text-center text-6xl font-thin'>Sign in</h1>
+        <div className='mb-4 mt-1 h-10 rounded border border-danger-300 bg-danger-50 p-2 text-center text-sm text-danger-400 empty:border-none empty:bg-transparent'>
+          {errors.email?.message ?? errors.password?.message ?? error}
+        </div>
         <button
           onClick={() => handleGoogle()}
           className='relative w-full rounded-md border border-default-300 bg-background px-4 py-2 text-sm font-medium text-default-500 hover:bg-default-50'
@@ -70,18 +77,39 @@ export default function Page() {
           <span className=''>Sign up with Google</span>
         </button>
         <Divider className='my-4' />
-        <div className={`mb-2 ${error ? 'block' : 'hidden'}`}>
-          <div className='rounded border border-danger-300 bg-danger-50 p-2 text-center text-sm text-danger-400'>
-            {error}
-          </div>
-        </div>
         <form onSubmit={handleSubmit(submit)} className='space-y-3' noValidate>
-          <Input type='email' label='email' {...register('email')} id='email' />
           <Input
-            type='password'
-            label='password'
-            {...register('password')}
+            type='email'
+            id='email'
+            label='email'
+            labelPlacement='inside'
+            placeholder='Enter your email'
+            variant='bordered'
+            {...register('email')}
+            isInvalid={!!errors.email?.message}
+          />
+          <Input
             id='password'
+            label='password'
+            labelPlacement='inside'
+            placeholder='Enter your password'
+            variant='bordered'
+            {...register('password')}
+            endContent={
+              <button
+                className='focus:outline-none'
+                type='button'
+                onClick={toggleVisibility}
+              >
+                {isVisible ? (
+                  <AiFillEyeInvisible className='pointer-events-none text-2xl text-default-400' />
+                ) : (
+                  <AiFillEye className='pointer-events-none text-2xl text-default-400' />
+                )}
+              </button>
+            }
+            type={isVisible ? 'text' : 'password'}
+            isInvalid={!!errors.password?.message}
           />
           <button
             type='submit'
