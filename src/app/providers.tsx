@@ -104,7 +104,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
     return await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: getSiteURL('auth/callback?next=workspace'),
+        redirectTo: getSiteURL('auth/callback?next=/workspace'),
       },
     });
   };
@@ -122,7 +122,6 @@ const Providers = ({ children }: { children: ReactNode }) => {
       email: email,
       password: password,
       options: {
-        emailRedirectTo: getSiteURL('auth/confirm?next=' + getSiteURL('workspace')),
         data: {
           name: name,
           avatar_url:

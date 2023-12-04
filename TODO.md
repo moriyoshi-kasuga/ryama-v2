@@ -1,7 +1,5 @@
 - ヘーダーをレスポンシブ対応にする
   > リンクをハンバーガーメニューにする
-- prisma adapter を 入れないと google provider が使えない [prisma-adapter](https://zenn.dev/ohtasoji/articles/439eea63f1828c)
-- あと sign up は普通に prisma 側だったから, nodeemaier を使ってメール登録ができる [shin code のやつ](https://www.youtube.com/watch?v=ERo_JwWohoQ) [海外のやつ](https://www.youtube.com/watch?v=g6sTypMUx48)
   > 海外のほうが詳しいと思うけど説明はshincodeのやつ見よう
 - あと loading とか 404 とか https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming ここらへん
 

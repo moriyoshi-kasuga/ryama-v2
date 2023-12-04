@@ -74,7 +74,7 @@ export default function Page() {
           className='relative w-full rounded-md border border-default-300 bg-background px-4 py-2 text-sm font-medium text-default-500 hover:bg-default-50'
         >
           <span className='absolute left-3 top-1/2 h-6 w-6 -translate-y-1/2 bg-[url("/images/google.svg")] bg-cover bg-center'></span>
-          <span className=''>Sign up with Google</span>
+          <span className=''>Sign in with Google</span>
         </button>
         <Divider className='my-4' />
         <form onSubmit={handleSubmit(submit)} className='space-y-3' noValidate>
