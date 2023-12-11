@@ -6,13 +6,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import ThemeButton from '../ThemeButton';
+import { cn } from '@/utils/utils';
 
 export default function HomeHeader() {
   const pathname = usePathname();
   const getLink = (href: string, inner?: React.ReactNode) => {
     return (
       <Link
-        className={`home-header-link ${pathname === href ? 'active' : ''}`}
+        className={cn('home-header-link', {
+          active: pathname === href,
+        })}
         href={href}
       >
         {inner ?? href.replace('/', '')}

@@ -1,23 +1,21 @@
 'use client';
-import React from 'react';
 import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownSection,
   DropdownItem,
-  Button,
-  User,
+  Avatar,
 } from '@nextui-org/react';
 import { AiFillApi } from 'react-icons/ai';
-import { RxHamburgerMenu } from 'react-icons/rx';
 import { useAuth } from '@/app/providers';
+import { useTheme } from 'next-themes';
 
 export default function UserMenu() {
   const { profile, signOut } = useAuth();
+  const theme = useTheme();
   return (
     <Dropdown
-      showArrow
       radius='sm'
       classNames={{
         base: 'before:bg-default-200',
@@ -25,9 +23,7 @@ export default function UserMenu() {
       }}
     >
       <DropdownTrigger>
-        <Button size='sm'>
-          <RxHamburgerMenu />
-        </Button>
+        <Avatar src={profile?.avatar_url} size='sm' />
       </DropdownTrigger>
       <DropdownMenu
         aria-label='Custom item styles'
@@ -39,27 +35,14 @@ export default function UserMenu() {
             'text-default-500',
             'transition-opacity',
             'data-[hover=true]:text-foreground',
-            'data-[hover=true]:bg-default-100',
-            'dark:data-[hover=true]:bg-default-50',
-            'data-[selectable=true]:focus:bg-default-50',
             'data-[pressed=true]:opacity-70',
             'data-[focus-visible=true]:ring-default-500',
           ],
         }}
       >
         <DropdownSection aria-label='Profile & Actions'>
-          <DropdownItem key='profile' className='h-14 gap-2'>
-            <User
-              name={profile?.name}
-              classNames={{
-                name: 'text-default-600',
-                description: 'text-default-500',
-              }}
-              avatarProps={{
-                size: 'sm',
-                src: profile?.avatar_url,
-              }}
-            />
+          <DropdownItem key='userName' showDivider>
+            <p>{profile?.name}</p>
           </DropdownItem>
           <DropdownItem key='dashboard'>Dashboard</DropdownItem>
           <DropdownItem key='settings'>Settings</DropdownItem>
@@ -84,10 +67,14 @@ export default function UserMenu() {
                 className='z-10 w-16 rounded-md border-small border-default-300 bg-transparent py-0.5 text-tiny text-default-500 outline-none group-data-[hover=true]:border-default-500 dark:border-default-200'
                 id='theme'
                 name='theme'
+                value={theme.theme}
+                onChange={(e) => theme.setTheme(e.target.value)}
               >
-                <option>System</option>
-                <option>Dark</option>
-                <option>Light</option>
+                {theme.themes.map((theme) => (
+                  <option key={theme} value={theme}>
+                    {theme}
+                  </option>
+                ))}
               </select>
             }
           >
@@ -97,7 +84,12 @@ export default function UserMenu() {
 
         <DropdownSection aria-label='Help & Feedback'>
           <DropdownItem key='help_and_feedback'>Help & Feedback</DropdownItem>
-          <DropdownItem key='logout' onClick={() => signOut()}>
+          <DropdownItem
+            key='logout'
+            onClick={() => signOut()}
+            className='text-danger'
+            color='danger'
+          >
             Log Out
           </DropdownItem>
         </DropdownSection>

@@ -2,6 +2,9 @@
  * @module どこからでもアクセスして簡単な処理達をまとめたファイルです
  */
 
+import { ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
 /**
  * @returns The URL of the site.
  */
@@ -19,4 +22,8 @@ export function getURL(): string {
  */
 export function getSiteURL(additional: string): string {
   return getURL() + additional;
+}
+
+export function cn(...inputs: ClassValue[]): string {
+  return twMerge(clsx(inputs));
 }
