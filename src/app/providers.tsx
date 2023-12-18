@@ -43,10 +43,10 @@ const AuthContext = createContext<AuthCtx>({} as AuthCtx);
 const useAuth = () => useContext(AuthContext);
 
 const Providers = ({ children }: { children: ReactNode }) => {
-  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profiles | null>(null);
+  const router = useRouter();
 
   const supabase = createClientSupabase();
 
@@ -69,13 +69,13 @@ const Providers = ({ children }: { children: ReactNode }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      if (!session) {
+        setProfile(null);
+        return;
+      }
       if (_event === 'SIGNED_OUT') {
         setProfile(null);
         router.push('/signin');
-        return;
-      }
-      if (!session) {
-        setProfile(null);
         return;
       }
       supabase
@@ -122,6 +122,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
       email: email,
       password: password,
       options: {
+        emailRedirectTo: getSiteURL('auth/confirm?next=/workspace'),
         data: {
           name: name,
           avatar_url:

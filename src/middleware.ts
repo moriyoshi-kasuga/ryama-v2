@@ -14,6 +14,7 @@ export async function middleware(request: NextRequest) {
     } = await supabase.auth.getSession();
 
     if (!session && isProtectedRoute(request.nextUrl.pathname)) {
+      console.log('redirecting to signin');
       return NextResponse.redirect(new URL('/signin', request.url));
     }
 

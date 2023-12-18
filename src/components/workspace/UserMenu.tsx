@@ -44,7 +44,6 @@ export default function UserMenu() {
           <DropdownItem key='userName' showDivider>
             <p>{profile?.name}</p>
           </DropdownItem>
-          <DropdownItem key='dashboard'>Dashboard</DropdownItem>
           <DropdownItem key='settings'>Settings</DropdownItem>
           <DropdownItem
             key='new_project'
@@ -55,9 +54,6 @@ export default function UserMenu() {
         </DropdownSection>
 
         <DropdownSection aria-label='Preferences' showDivider>
-          <DropdownItem key='quick_search' shortcut='⌘K'>
-            Quick search
-          </DropdownItem>
           <DropdownItem
             isReadOnly
             key='theme'
@@ -82,8 +78,7 @@ export default function UserMenu() {
           </DropdownItem>
         </DropdownSection>
 
-        <DropdownSection aria-label='Help & Feedback'>
-          <DropdownItem key='help_and_feedback'>Help & Feedback</DropdownItem>
+        <DropdownSection aria-label='Logout'>
           <DropdownItem
             key='logout'
             onClick={() => signOut()}

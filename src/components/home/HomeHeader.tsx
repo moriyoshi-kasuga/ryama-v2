@@ -27,7 +27,7 @@ export default function HomeHeader() {
     <header className='h-[var(--header-height)] border-b border-b-divider'>
       <div className='container m-auto flex w-11/12 items-center justify-between p-1 text-default-400'>
         <div className='flex items-center'>
-          <Link className='flex items-center transition-colors' href='/'>
+          <Link className='flex items-center transition-colors hover:text-opacity-10' href='/'>
             <h1 className='mx-4 font-sans text-2xl font-thin'>RYAMA</h1>
           </Link>
         </div>
@@ -46,7 +46,7 @@ export default function HomeHeader() {
             '/signup',
             <>
               <VscAccount />
-              <span>signup</span>
+              <span>sign up</span>
             </>,
           )}
           {getLink(

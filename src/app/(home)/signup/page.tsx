@@ -68,7 +68,7 @@ export default function Page() {
   return (
     <div className='flex h-full flex-col justify-center'>
       <div className='mx-auto w-5/6 max-w-sm  py-6'>
-        <h1 className='pb-7 text-center text-6xl font-thin'>Sign up</h1>
+        <h1 className='select-none pb-7 text-center text-6xl font-thin'>Sign up</h1>
         <div className='mb-4 mt-1 h-10 rounded border border-danger-300 bg-danger-50 p-2 text-center text-sm text-danger-400 empty:border-none empty:bg-transparent'>
           {errors.name?.message ??
             errors.email?.message ??
