@@ -138,7 +138,7 @@ export default function Page() {
             <p className='text-center text-default-500'>
               {'Have an account? '}
               <Link
-                href='/signup'
+                href='/signin'
                 className='text-secondary-400 transition-colors duration-300 hover:text-secondary-500'
               >
                 Sign in an account
