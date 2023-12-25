@@ -13,14 +13,14 @@ export async function middleware(request: NextRequest) {
       data: { session },
     } = await supabase.auth.getSession();
 
-    // if (!session && isProtectedRoute(request.nextUrl.pathname)) {
-    //   console.log('redirecting to signin');
-    //   return NextResponse.redirect(new URL('/signin', request.url));
-    // }
-    //
-    // if (session && !isProtectedRoute(request.nextUrl.pathname)) {
-    //   return NextResponse.redirect(new URL('/workspace', request.url));
-    // }
+    if (!session && isProtectedRoute(request.nextUrl.pathname)) {
+      console.log('redirecting to signin');
+      return NextResponse.redirect(new URL('/signin', request.url));
+    }
+
+    if (session && !isProtectedRoute(request.nextUrl.pathname)) {
+      return NextResponse.redirect(new URL('/workspace', request.url));
+    }
 
     return response;
   } catch (e) {
