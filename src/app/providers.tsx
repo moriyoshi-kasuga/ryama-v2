@@ -67,13 +67,17 @@ const Providers = ({ children }: { children: ReactNode }) => {
     });
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(`event: ${event}, session: ${JSON.stringify(session)}`);
+      // if (event === 'INITIAL_SESSION') {
+      //   return;
+      // }
       setSession(session);
       if (!session) {
         setProfile(null);
         return;
       }
-      if (_event === 'SIGNED_OUT') {
+      if (event === 'SIGNED_OUT') {
         setProfile(null);
         router.push('/signin');
         return;
@@ -104,7 +108,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
     return await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: getSiteURL('auth/callback?next=/workspace'),
+        redirectTo: getSiteURL('auth/callback'),
       },
     });
   };
@@ -122,7 +126,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
       email: email,
       password: password,
       options: {
-        emailRedirectTo: getSiteURL('auth/confirm?next=/workspace'),
+        emailRedirectTo: getSiteURL('auth/confirm'),
         data: {
           name: name,
           avatar_url:
